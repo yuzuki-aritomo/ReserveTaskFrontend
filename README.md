@@ -9,7 +9,7 @@ $ cd ReserveTaskFrontend
 
 $ docker compose build
 
-$ docker compose run --rm app sh -c "cd app && npm install"
+$ docker compose run --rm app sh -c "cd next-app && npm install"
 ```
 
 ## docker起動
