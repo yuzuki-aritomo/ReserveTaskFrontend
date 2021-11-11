@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
 import Link from 'next/link'
-import { SignUpReqData } from 'Api/Auth/Models/AuthApiModel'
+import { SignUpReqData, SignUpApiResData } from 'Api/Auth/Models/AuthApiModel'
 import { SignUpApi } from 'Api/Auth/AuthApi'
 import { useRouter } from 'next/router'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
@@ -18,14 +17,14 @@ const SignUpPage: NextPage = () => {
       password: password.value,
       role: role.value,
     }
-    const SignUpResponse = await SignUpApi(ReqData)
-    console.log("response:",SignUpResponse)
-    if(SignUpResponse.status == "success"){
+    const signUpResData: SignUpApiResData  = await SignUpApi(ReqData)
+    if(signUpResData.ok){
       //User情報を保存して/homeにリダイレクト
       //router.push('/home')
+      console.log("SignUpApi",signUpResData)
     }else{
       //error情報を表示
-      console.log(SignUpResponse.errors.full_messages)
+      console.log("error:", signUpResData.errorText)
     }
   }
 
@@ -56,12 +55,14 @@ const SignUpPage: NextPage = () => {
                     label="User"
                     name="role"
                     value="1"
+                    id="1"
                   />
                   <Form.Check
                     type="radio"
                     label="Financial Planner"
                     name="role"
                     value="2"
+                    id="2"
                   />
                 </Form.Group>
                 <Button className="mt-2" variant="primary" type="submit">

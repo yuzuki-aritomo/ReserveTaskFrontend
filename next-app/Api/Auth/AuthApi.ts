@@ -1,10 +1,9 @@
-
-import { SignUpReqData } from "./Models/AuthApiModel"
+import { SignUpReqData, SignUpApiResData, SignUpResData } from "./Models/AuthApiModel"
 
 const baseUrl = 'http://localhost:3001/'
 
-export const SignUpApi = async (ReqData: SignUpReqData) => {
-  const res = await fetch(baseUrl+'auth/', {
+export const SignUpApi= async (ReqData: SignUpReqData)=> {
+  const res: Response = await fetch(baseUrl+'auth/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -16,12 +15,18 @@ export const SignUpApi = async (ReqData: SignUpReqData) => {
       role: ReqData.role,
     })
   })
-  .then(response => response.json())
-  .then((data)=>{
-    return data
-  }).catch((error)=>{
-    console.log(error)
-    return error
-  })
-  return res
+  if(res.ok){
+    const signUpResData = await res.json() as SignUpResData
+    const signUpApiResData: SignUpApiResData = {
+      ok: true,
+      res: signUpResData,
+    }
+    return signUpApiResData
+  }else{
+    const signUpApiResData: SignUpApiResData = {
+      ok: false,
+      errorText: res.statusText,
+    }
+    return signUpApiResData
+  }
 }
