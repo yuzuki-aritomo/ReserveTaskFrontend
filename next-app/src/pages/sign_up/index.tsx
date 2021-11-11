@@ -1,32 +1,31 @@
 import type { NextPage } from 'next'
 import { useState } from 'react'
 import Link from 'next/link'
-import { SignupReqData } from 'Api/Auth/Models/AuthApiModel'
+import { SignUpReqData } from 'Api/Auth/Models/AuthApiModel'
 import { SignUpApi } from 'Api/Auth/AuthApi'
 import { useRouter } from 'next/router'
+import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
 
-const SignupPage: NextPage = () => {
+const SignUpPage: NextPage = () => {
   const router = useRouter()
 
-  const [Email, setEmail] = useState('')
-  const [Password, setPassword] = useState('')
-  const [Name, setName] = useState('')
-
-  const SignUp = async () => {
-    const ReqData: SignupReqData = {
-      email: Email,
-      password: Password,
-      name: Name,
-      role: 1
+  const SignUpSubmit = async (event: any) => {
+    event.preventDefault();
+    const { name, email, password, role } = event.target.elements;
+    const ReqData: SignUpReqData = {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      role: role.value,
     }
-    const SignupResponse = await SignUpApi(ReqData)
-    console.log(SignupResponse)
-    if(SignupResponse.status == "success"){
-      //User情報を保存する
+    const SignUpResponse = await SignUpApi(ReqData)
+    console.log("response:",SignUpResponse)
+    if(SignUpResponse.status == "success"){
+      //User情報を保存して/homeにリダイレクト
       //router.push('/home')
     }else{
       //error情報を表示
-      console.log(SignupResponse.errors.full_messages)
+      console.log(SignUpResponse.errors.full_messages)
     }
   }
 
@@ -34,29 +33,47 @@ const SignupPage: NextPage = () => {
     <div>
       <Link href="/">Top</Link>
       <h1>sign up</h1>
-      <div className="form">
-        <input
-          type="email"
-          name="email"
-          onChange={e => setEmail(e.target.value)}
-          value={ Email }
-        />
-        <input
-          type="password"
-          name="password"
-          onChange={e => setPassword(e.target.value)}
-          value={ Password }
-        />
-        <input
-          type="text"
-          name="name"
-          onChange={e => setName(e.target.value)}
-          value={ Name }
-        />
-        <button onClick={SignUp}>Sign up</button>
-      </div>
+      <Row className="justify-content-md-center mt-4">
+        <Col md={8}>
+          <Card>
+            <Card.Header>Sign up</Card.Header>
+            <Card.Body>
+              <Form onSubmit={SignUpSubmit}>
+                <FloatingLabel controlId="name" label="User Name" className="mb-3">
+                  <Form.Control required type="text" placeholder="text"/>
+                </FloatingLabel>
+                <FloatingLabel controlId="email" label="Email address" className="mb-3">
+                  <Form.Control required type="email" placeholder="Email@example.com" />
+                </FloatingLabel>
+                <FloatingLabel controlId="password" label="Password" className="mb-3">
+                  <Form.Control required type="password" placeholder="Password" />
+                </FloatingLabel>
+                <Form.Group controlId="role">
+                  <Form.Label>User Type</Form.Label>
+                  <Form.Check
+                    required
+                    type="radio"
+                    label="User"
+                    name="role"
+                    value="1"
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Financial Planner"
+                    name="role"
+                    value="2"
+                  />
+                </Form.Group>
+                <Button className="mt-2" variant="primary" type="submit">
+                  Sign Up
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </div>
   )
 }
 
-export default SignupPage
+export default SignUpPage

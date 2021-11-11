@@ -1,9 +1,9 @@
 
-import { SignupReqData } from "./Models/AuthApiModel"
+import { SignUpReqData } from "./Models/AuthApiModel"
 
 const baseUrl = 'http://localhost:3001/'
 
-export const SignUpApi = async (ReqData: SignupReqData) => {
+export const SignUpApi = async (ReqData: SignUpReqData) => {
   const res = await fetch(baseUrl+'auth/', {
     method: 'POST',
     headers: {

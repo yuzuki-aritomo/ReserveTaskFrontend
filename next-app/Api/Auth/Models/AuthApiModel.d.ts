@@ -1,4 +1,4 @@
-export interface SignupReqData {
+export interface SignUpReqData {
   email: string;
   password: string;
   name: string;
