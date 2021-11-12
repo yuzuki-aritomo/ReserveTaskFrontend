@@ -1,4 +1,4 @@
-import { SignUpReqData, SignUpApiResData, SignUpResData } from "./Models/AuthApiModel"
+import { SignUpReqData, SignUpApiResData, SignUpResData } from "./Models/SignUpApiModel"
 
 const baseUrl = 'http://localhost:3001/'
 

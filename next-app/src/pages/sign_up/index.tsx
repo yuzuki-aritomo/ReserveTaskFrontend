@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import { SignUpReqData, SignUpApiResData } from 'Api/Auth/Models/AuthApiModel'
-import { SignUpApi } from 'Api/Auth/AuthApi'
+import { SignUpReqData, SignUpApiResData } from 'Api/Auth/Models/SignUpApiModel'
+import { SignUpApi } from 'Api/Auth/SignUpApi'
 import { useRouter } from 'next/router'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
 
