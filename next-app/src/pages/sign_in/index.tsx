@@ -25,6 +25,24 @@ const SignInPage: NextPage = () => {
       console.log("SignInError:", signInApiResData.errorText)
     }
   }
+  const testSubmit = async (event: any) => {
+    event.preventDefault();
+    const res: Response = await fetch('http://localhost:3001/test', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Cache': 'no-cache',
+        'Authorization': 'Bearer access-token',
+        'uid': localStorage.getItem("uid") ?? "",
+        'access-token': localStorage.getItem("access-token") ?? "",
+        'client': localStorage.getItem("client") ?? "",
+      },
+      credentials: 'include',
+    })
+    console.log(res)
+  }
 
   return(
     <div>
@@ -50,6 +68,11 @@ const SignInPage: NextPage = () => {
           </Card>
         </Col>
       </Row>
+      <Form onSubmit={testSubmit}>
+        <Button className="mt-2" variant="primary" type="submit">
+          test
+        </Button>
+      </Form>
     </div>
   )
 }
