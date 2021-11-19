@@ -47,6 +47,15 @@ const CalDay: FC<CalDayProps> = ( props ) => {
 }
 
 const CalWeek: FC = () => {
+  //今日を含む直近の一週間の日付をweekDaysに保存
+  const today = new Date()
+  var weekDays: String[] = Array(7)
+  var dt = new Date()
+  for(var i=0; i<7;i++){
+    dt.setDate(today.getDate() + (i - today.getDay()) );
+    weekDays[i] = dt.toString();
+  }
+  console.log(weekDays)
   return(
     <div>
       <h1>test</h1>

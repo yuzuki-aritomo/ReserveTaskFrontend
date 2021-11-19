@@ -13,7 +13,7 @@
 }
 
 .cal_day {
-  width: 10%;
+  width: calc(100%/8);
   border: solid 1px rgb(139, 139, 139);
   border-bottom: none;
   margin-left: -1px;
