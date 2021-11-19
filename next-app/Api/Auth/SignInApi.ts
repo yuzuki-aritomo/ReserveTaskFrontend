@@ -5,7 +5,6 @@ const baseUrl = 'http://localhost:3001/'
 export const SignInApi= async (signInReqData: SignInReqData)=> {
   const res: Response = await fetch(baseUrl+'auth/sign_in/', {
     method: 'POST',
-    credentials: 'include',
     mode: 'cors',
     headers: {
       'Accept': 'application/json',

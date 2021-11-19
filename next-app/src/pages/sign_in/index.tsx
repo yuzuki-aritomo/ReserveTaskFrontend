@@ -27,21 +27,25 @@ const SignInPage: NextPage = () => {
   }
   const testSubmit = async (event: any) => {
     event.preventDefault();
-    const res: Response = await fetch('http://localhost:3001/test', {
-      method: 'GET',
+    const res: Response = await fetch('http://localhost:3001/receptions', {
+      method: 'POST',
       mode: 'cors',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Cache': 'no-cache',
-        'Authorization': 'Bearer access-token',
         'uid': localStorage.getItem("uid") ?? "",
         'access-token': localStorage.getItem("access-token") ?? "",
         'client': localStorage.getItem("client") ?? "",
       },
-      credentials: 'include',
+      body: JSON.stringify({
+        "register_date": [
+          "2021-10-16T17:00:00+09:00"
+        ]
+      })
     })
     console.log(res)
+    console.log(res.json())
   }
 
   return(
@@ -66,13 +70,16 @@ const SignInPage: NextPage = () => {
               </Form>
             </Card.Body>
           </Card>
+          {/* ------------ */}
+          <Form onSubmit={testSubmit}>
+            <Button className="mt-2" variant="primary" type="submit">
+              test
+            </Button>
+          </Form>
+          {/* ------------ */}
         </Col>
       </Row>
-      <Form onSubmit={testSubmit}>
-        <Button className="mt-2" variant="primary" type="submit">
-          test
-        </Button>
-      </Form>
+      
     </div>
   )
 }
