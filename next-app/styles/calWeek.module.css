@@ -1,0 +1,21 @@
+.cal {
+  width: 80%;
+  margin: 0 auto;
+}
+.cal_time {
+  border-bottom: solid 1px rgb(139, 139, 139);
+  height: 100px;
+  color: red;
+  margin: 0;
+}
+.cal_time:hover {
+  background-color: aqua;
+}
+
+.cal_day {
+  width: 10%;
+  border: solid 1px rgb(139, 139, 139);
+  border-bottom: none;
+  margin-left: -1px;
+  padding: 0;
+}
