@@ -47,13 +47,6 @@ const SignInPage: NextPage = () => {
               </Form>
             </Card.Body>
           </Card>
-          {/* ------------ */}
-          <Form onSubmit={testSubmit}>
-            <Button className="mt-2" variant="primary" type="submit">
-              test
-            </Button>
-          </Form>
-          {/* ------------ */}
         </Col>
       </Row>
     </div>
