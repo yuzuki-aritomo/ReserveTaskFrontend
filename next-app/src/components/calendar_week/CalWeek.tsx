@@ -1,4 +1,4 @@
-import {FC} from 'react'
+import { FC, useState} from 'react'
 import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
 
@@ -7,8 +7,13 @@ type CalTimeProps = {
   time: string,
 }
 const CalTime: FC<CalTimeProps> = (props) => {
+  const dt = new Date(props.day)
+  const time = props.time.slice(0, -1)
+  dt.setHours(Number(time.split(":")[0]))
+  dt.setMinutes(Number(time.split(":")[1]))
   return(
     <div className={ styles.cal_time }>
+      { dt.toISOString() }
     </div>
   )
 }
@@ -81,7 +86,7 @@ const Cal: FC = () => {
   //今日を含む直近の一週間の日付をweekDaysに保存
   const today = new Date()
   var weekDays: string[] = Array(7)
-  var dt = new Date()
+  var dt = new Date(today.getFullYear(), today.getMonth())
   for(var i=0; i<7;i++){
     dt.setDate(today.getDate() + (i - today.getDay()));
     weekDays[i] = dt.toISOString();
