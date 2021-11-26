@@ -1,4 +1,4 @@
-import { FC, useState} from 'react'
+import { FC, useState, createContext ,useContext} from 'react'
 import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
 
@@ -13,17 +13,14 @@ const CalTime: FC<CalTimeProps> = (props) => {
   dt.setMinutes(Number(time.split(":")[1]))
   const dt_ISOS = dt.toISOString()
 
-  const reservation_dates = new Date("2021-11-25T13:00:00+09:00").toISOString()
-  const reception_dates = new Date("2021-11-24T13:00:00+09:00").toISOString()
-  
-  if( dt_ISOS === reservation_dates ){
+  const receptions = useContext(ReceptionContext)
+  if (receptions.some(r => r.start===dt_ISOS && r.reserved)){
     return(
       <div className={ styles.cal_time }>
         予約されています
       </div>
     )
-  }
-  if( dt_ISOS === reception_dates ){
+  }else if (receptions.some(r => r.start===dt_ISOS)){
     return(
       <div className={ styles.cal_time }>
         予約受付
@@ -102,7 +99,26 @@ const CalWeek: FC<CalWeekProps> = (props) => {
   )
 }
 
+interface ReceptionData {
+  id: number;
+  start: string;
+  user_name: string;
+  reserved: boolean;
+}
+const ReceptionContext = createContext<ReceptionData[]>([])
+
 const Cal: FC = () => {
+  const [ receptions, setReceptions] = useState<ReceptionData[]>([])
+  const getReceptionData = () => {
+    const d: ReceptionData = {
+      id: 1,
+      start: new Date("2021-11-25T13:00:00+09:00").toISOString(),
+      user_name: "test",
+      reserved: true
+    }
+    const l: ReceptionData[] = [d]
+    setReceptions(l)
+  }
   //今日を含む直近の一週間の日付をweekDaysに保存
   const today = new Date()
   var weekDays: string[] = Array(7)
@@ -111,7 +127,7 @@ const Cal: FC = () => {
     dt.setDate(today.getDate() + (i - today.getDay()));
     weekDays[i] = dt.toISOString();
   }
-  const [week, setWeek] = useState(weekDays)
+  const [week, setWeek] = useState<string[]>(weekDays)
   const toNextWeek = () => {
     changeWeek(true)
   }
@@ -131,9 +147,12 @@ const Cal: FC = () => {
   }
   return(
     <div>
-      <h1 onClick={ toNextWeek }>次の週</h1>
-      <h1 onClick={ toPrevWeek }>前の週</h1>
-      <CalWeek weekDays={ week } />
+      <ReceptionContext.Provider value={ receptions }>
+        <h1 onClick={ toNextWeek }>次の週</h1>
+        <h1 onClick={ toPrevWeek }>前の週</h1>
+        <h1 onClick={ getReceptionData }>データの取得</h1>
+        <CalWeek weekDays={ week } />
+      </ReceptionContext.Provider>
     </div>
   )
 }
