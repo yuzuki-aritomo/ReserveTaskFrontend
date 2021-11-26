@@ -52,8 +52,10 @@ const CalDay: FC<CalDayProps> = ( props ) => {
     '16:00~', '16:30~',
     '17:00~', '17:30~',
   ]
-  const ymd = props.day.split('T')[0].split('-')
-  const format_day: string = ymd[1]+"/"+ymd[2]
+  const dt = new Date(props.day)
+  const m = dt.getMonth()+1
+  const d = dt.getDate()
+  const format_day: string = m+"/"+d
   return(
     <div>
       { props.titleFlag && 
@@ -82,7 +84,6 @@ type CalWeekProps = {
 const CalWeek: FC<CalWeekProps> = (props) => {
   return(
     <div>
-      <h1>test</h1>
       <div className={styles.cal}>
         <Row className="justify-content-md-center mt-4">
           <Col md={4} className={ styles.cal_day }>
@@ -110,8 +111,30 @@ const Cal: FC = () => {
     dt.setDate(today.getDate() + (i - today.getDay()));
     weekDays[i] = dt.toISOString();
   }
+  const [week, setWeek] = useState(weekDays)
+  const toNextWeek = () => {
+    changeWeek(true)
+  }
+  const toPrevWeek = () => {
+    changeWeek(false)
+  }
+  const changeWeek = (next_flag : boolean) => {
+    const dt = new Date(week[0])
+    const diffDays = next_flag ? 6 : -8
+    dt.setDate(dt.getDate() + diffDays)
+    var Week: string[] = Array(7)
+    for(var i=0; i<7;i++){
+      dt.setDate(dt.getDate()+1)
+      Week[i] = dt.toISOString()
+    }
+    setWeek(Week)
+  }
   return(
-    <CalWeek weekDays={ weekDays } />
+    <div>
+      <h1 onClick={ toNextWeek }>次の週</h1>
+      <h1 onClick={ toPrevWeek }>前の週</h1>
+      <CalWeek weekDays={ week } />
+    </div>
   )
 }
 
