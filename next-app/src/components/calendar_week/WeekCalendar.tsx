@@ -12,7 +12,6 @@ const CalTime: FC<CalTimeProps> = (props) => {
   dt.setHours(Number(time.split(":")[0]))
   dt.setMinutes(Number(time.split(":")[1]))
   const dt_ISOS = dt.toISOString()
-
   const receptions = useContext(ReceptionContext)
   if (receptions.some(r => r.start===dt_ISOS && r.reserved)){
     return(
@@ -33,6 +32,7 @@ const CalTime: FC<CalTimeProps> = (props) => {
     </div>
   )
 }
+
 
 type CalDayProps = {
   titleFlag: boolean,
@@ -75,6 +75,7 @@ const CalDay: FC<CalDayProps> = ( props ) => {
   )
 }
 
+
 type CalWeekProps = {
   weekDays: string[],
 }
@@ -107,18 +108,10 @@ interface ReceptionData {
 }
 const ReceptionContext = createContext<ReceptionData[]>([])
 
-const Cal: FC = () => {
-  const [ receptions, setReceptions] = useState<ReceptionData[]>([])
-  const getReceptionData = () => {
-    const d: ReceptionData = {
-      id: 1,
-      start: new Date("2021-11-25T13:00:00+09:00").toISOString(),
-      user_name: "test",
-      reserved: true
-    }
-    const l: ReceptionData[] = [d]
-    setReceptions(l)
-  }
+type WeekCalendarProps = {
+  receptions: ReceptionData[]
+}
+const WeekCalendar: FC<WeekCalendarProps> = (props) => {
   //今日を含む直近の一週間の日付をweekDaysに保存
   const today = new Date()
   var weekDays: string[] = Array(7)
@@ -127,6 +120,7 @@ const Cal: FC = () => {
     dt.setDate(today.getDate() + (i - today.getDay()));
     weekDays[i] = dt.toISOString();
   }
+  //日付変更
   const [week, setWeek] = useState<string[]>(weekDays)
   const toNextWeek = () => {
     changeWeek(true)
@@ -147,15 +141,13 @@ const Cal: FC = () => {
   }
   return(
     <div>
-      <ReceptionContext.Provider value={ receptions }>
+      <ReceptionContext.Provider value={ props.receptions }>
         <h1 onClick={ toNextWeek }>次の週</h1>
         <h1 onClick={ toPrevWeek }>前の週</h1>
-        <h1 onClick={ getReceptionData }>データの取得</h1>
         <CalWeek weekDays={ week } />
       </ReceptionContext.Provider>
     </div>
   )
 }
 
-
-export default Cal
+export default WeekCalendar
