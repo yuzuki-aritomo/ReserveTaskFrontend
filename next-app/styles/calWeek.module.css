@@ -3,9 +3,8 @@
   margin: 0 auto;
 }
 .cal_time {
-  border-bottom: solid 1px rgb(139, 139, 139);
-  height: 100px;
-  color: red;
+  border-bottom: solid 1px rgb(218, 218, 218);;
+  height: 50px;
   margin: 0;
 }
 .cal_time:hover {
@@ -14,7 +13,7 @@
 
 .cal_day {
   width: calc(100%/8);
-  border: solid 1px rgb(139, 139, 139);
+  border: solid 1px rgb(218, 218, 218);
   border-bottom: none;
   margin-left: -1px;
   padding: 0;

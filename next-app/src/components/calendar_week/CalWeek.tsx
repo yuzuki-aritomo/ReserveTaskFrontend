@@ -9,8 +9,6 @@ type CalTimeProps = {
 const CalTime: FC<CalTimeProps> = (props) => {
   return(
     <div className={ styles.cal_time }>
-      { props.day }
-      { props.time }
     </div>
   )
 }
@@ -21,21 +19,29 @@ type CalDayProps = {
 }
 const CalDay: FC<CalDayProps> = ( props ) => {
   const timeline = [
-    '10:00~10:30',
-    '10:30~11:00',
-    '11:00~11:30',
-    '11:30~12:00',
+    '10:00',
+    '10:30',
+    '11:00',
+    '11:30',
+    '12:00',
+    '12:30',
+    '13:00',
+    '13:30',
   ]
+  const ymd = props.day.split('T')[0].split('-')
+  const format_day: string = ymd[1]+"/"+ymd[2]
   return(
     <div>
       { props.titleFlag && 
         <div className={ styles.cal_time }></div>
       }
-      { !props.titleFlag && 
-        <div className={ styles.cal_time }>{ props.day }</div>
-      }
       { props.titleFlag && 
-        timeline.map((value, index) => <div className={ styles.cal_time } key={index}>{value}</div> )
+        timeline.map((value, index) => 
+          <div className={ styles.cal_time } key={index}>{value}</div> 
+        )
+      }
+      { !props.titleFlag && 
+        <div className={ styles.cal_time }>{ format_day }</div>
       }
       { !props.titleFlag && 
         timeline.map((value, index) => 
@@ -46,49 +52,44 @@ const CalDay: FC<CalDayProps> = ( props ) => {
   )
 }
 
-const CalWeek: FC = () => {
-  //今日を含む直近の一週間の日付をweekDaysに保存
-  const today = new Date()
-  var weekDays: String[] = Array(7)
-  var dt = new Date()
-  for(var i=0; i<7;i++){
-    dt.setDate(today.getDate() + (i - today.getDay()) );
-    weekDays[i] = dt.toString();
-  }
-  console.log(weekDays)
+type CalWeekProps = {
+  weekDays: string[],
+}
+const CalWeek: FC<CalWeekProps> = (props) => {
   return(
     <div>
       <h1>test</h1>
       <div className={styles.cal}>
         <Row className="justify-content-md-center mt-4">
           <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ true } day='2021-11-13'/>
+            <CalDay titleFlag={ true } day="" />
           </Col>
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ false } day='2021-11-13'/>
-          </Col>
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ false } day='2021-11-13'/>
-          </Col>
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ false } day='2021-11-13'/>
-          </Col>
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ false } day='2021-11-13'/>
-          </Col>
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ false } day='2021-11-13'/>
-          </Col>
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ false } day='2021-11-13'/>
-          </Col>
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ false } day='2021-11-13'/>
-          </Col>
+          { 
+            props.weekDays.map((value, index) => 
+              <Col md={4} className={ styles.cal_day } key={ index }>
+                <CalDay titleFlag={ false } day={ value }/>
+              </Col>
+            )
+          }
         </Row>
       </div>
     </div>
   )
 }
 
-export default CalWeek
+const Cal: FC = () => {
+  //今日を含む直近の一週間の日付をweekDaysに保存
+  const today = new Date()
+  var weekDays: string[] = Array(7)
+  var dt = new Date()
+  for(var i=0; i<7;i++){
+    dt.setDate(today.getDate() + (i - today.getDay()));
+    weekDays[i] = dt.toISOString();
+  }
+  return(
+    <CalWeek weekDays={ weekDays } />
+  )
+}
+
+
+export default Cal
