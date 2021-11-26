@@ -1,6 +1,7 @@
 import { FC, useState, createContext ,useContext} from 'react'
 import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
+import { ReceptionData } from 'Models/ReceptionModel'
 
 type CalTimeProps = {
   day: string,
@@ -100,12 +101,6 @@ const CalWeek: FC<CalWeekProps> = (props) => {
   )
 }
 
-interface ReceptionData {
-  id: number;
-  start: string;
-  user_name: string;
-  reserved: boolean;
-}
 const ReceptionContext = createContext<ReceptionData[]>([])
 
 type WeekCalendarProps = {

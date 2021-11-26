@@ -1,31 +1,26 @@
 import type { NextPage } from 'next'
-import { useState, createContext } from 'react'
 import WeekCalendar from 'src/components/calendar_week/WeekCalendar'
+import { ReceptionData } from 'Models/ReceptionModel'
 
-interface ReceptionData {
-  id: number;
-  start: string;
-  user_name: string;
-  reserved: boolean;
+export const getServerSideProps = async() =>{
+  //APIの呼び出し
+  const reception: ReceptionData = {
+    id: 1,
+    start: new Date("2021-11-25T13:00:00+09:00").toISOString(),
+    user_name: "test",
+    reserved: false
+  }
+  const receptions: ReceptionData[] = [reception]
+  return { props: { receptions } }
 }
 
-const ReceptionsPage: NextPage = () => {
-  
-  const [ receptions, setReceptions] = useState<ReceptionData[]>([])
-  const getReceptionData = () => {
-    const d: ReceptionData = {
-      id: 1,
-      start: new Date("2021-11-25T13:00:00+09:00").toISOString(),
-      user_name: "test",
-      reserved: true
-    }
-    const l: ReceptionData[] = [d]
-    setReceptions(l)
-  }
+type ReceptionsPageProps = {
+  receptions: ReceptionData[]
+}
+const ReceptionsPage: NextPage<ReceptionsPageProps> = ( props ) => {
   return(
     <div>
-      <h1 onClick={ getReceptionData }>データの取得</h1>
-      <WeekCalendar receptions={ receptions } />
+      <WeekCalendar receptions={ props.receptions } />
     </div>
   )
 }
