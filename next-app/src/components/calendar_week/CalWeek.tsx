@@ -11,9 +11,28 @@ const CalTime: FC<CalTimeProps> = (props) => {
   const time = props.time.slice(0, -1)
   dt.setHours(Number(time.split(":")[0]))
   dt.setMinutes(Number(time.split(":")[1]))
+  const dt_ISOS = dt.toISOString()
+
+  const reservation_dates = new Date("2021-11-25T13:00:00+09:00").toISOString()
+  const reception_dates = new Date("2021-11-24T13:00:00+09:00").toISOString()
+  
+  if( dt_ISOS === reservation_dates ){
+    return(
+      <div className={ styles.cal_time }>
+        予約されています
+      </div>
+    )
+  }
+  if( dt_ISOS === reception_dates ){
+    return(
+      <div className={ styles.cal_time }>
+        予約受付
+      </div>
+    )
+  }
   return(
     <div className={ styles.cal_time }>
-      { dt.toISOString() }
+      
     </div>
   )
 }
