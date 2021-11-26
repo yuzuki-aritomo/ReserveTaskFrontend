@@ -6,6 +6,8 @@
   border-bottom: solid 1px rgb(218, 218, 218);;
   height: 50px;
   margin: 0;
+  text-align: center;
+  line-height: 50px;
 }
 .cal_time:hover {
   background-color: aqua;

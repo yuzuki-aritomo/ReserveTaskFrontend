@@ -27,6 +27,15 @@ const CalDay: FC<CalDayProps> = ( props ) => {
     '12:30',
     '13:00',
     '13:30',
+    '14:00',
+    '14:30',
+    '15:00',
+    '15:30',
+    '16:00',
+    '16:30',
+    '17:00',
+    '17:30',
+    '18:00',
   ]
   const ymd = props.day.split('T')[0].split('-')
   const format_day: string = ymd[1]+"/"+ymd[2]
