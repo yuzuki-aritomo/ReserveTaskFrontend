@@ -111,8 +111,9 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
   const today = new Date()
   var weekDays: string[] = Array(7)
   var dt = new Date(today.getFullYear(), today.getMonth())
+  dt.setDate(today.getDate() - today.getDay()-1);
   for(var i=0; i<7;i++){
-    dt.setDate(today.getDate() + (i - today.getDay()));
+    dt.setDate(dt.getDate() + 1);
     weekDays[i] = dt.toISOString();
   }
   //日付変更
