@@ -1,6 +1,23 @@
-import { SignUpReqData, SignUpApiResData, SignUpResData } from "./Models/SignUpApiModel"
-
-const baseUrl = 'http://localhost:3001/'
+import { baseUrl } from "Api/ApiConfig"
+export interface SignUpReqData {
+  email: string;
+  password: string;
+  name: string;
+  role: number;
+}
+export interface SignUpResData {
+  status: string;
+  data: {
+    id: number;
+    email: string;
+    provider: string;
+    allow_password_change: boolean;
+    name: string;
+    role: number;
+    created_at: string;
+    updated_at: string;
+  }
+}
 
 export const SignUpApi= async (ReqData: SignUpReqData)=> {
   return fetch(baseUrl+'auth/', {
