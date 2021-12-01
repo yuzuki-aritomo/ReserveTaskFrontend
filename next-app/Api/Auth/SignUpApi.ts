@@ -3,7 +3,7 @@ import { SignUpReqData, SignUpApiResData, SignUpResData } from "./Models/SignUpA
 const baseUrl = 'http://localhost:3001/'
 
 export const SignUpApi= async (ReqData: SignUpReqData)=> {
-  const res: Response = await fetch(baseUrl+'auth/', {
+  return fetch(baseUrl+'auth/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -15,18 +15,17 @@ export const SignUpApi= async (ReqData: SignUpReqData)=> {
       role: ReqData.role,
     })
   })
-  if(res.ok){
-    const signUpResData = await res.json() as SignUpResData
-    const signUpApiResData: SignUpApiResData = {
-      ok: true,
-      res: signUpResData,
+  .then(response =>{
+    if (!response.ok){
+      throw new Error("エラーが発生しました。")
     }
-    return signUpApiResData
-  }else{
-    const signUpApiResData: SignUpApiResData = {
-      ok: false,
-      errorText: res.statusText,
-    }
-    return signUpApiResData
+    return response.json()
+  })
+  .then(data => {
+    return data as SignUpResData
+  })
+  .catch((error) => {
+    throw new Error("エラーが発生しました。")
   }
+  )
 }

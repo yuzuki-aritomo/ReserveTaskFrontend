@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import { SignUpReqData, SignUpApiResData } from 'Api/Auth/Models/SignUpApiModel'
+import { SignUpReqData, SignUpResData } from 'Api/Auth/Models/SignUpApiModel'
 import { SignUpApi } from 'Api/Auth/SignUpApi'
 import { useRouter } from 'next/router'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
@@ -17,14 +17,13 @@ const SignUpPage: NextPage = () => {
       password: password.value,
       role: role.value,
     }
-    const signUpResData: SignUpApiResData  = await SignUpApi(ReqData)
-    if(signUpResData.ok){
+    try{
+      const signUpResData: SignUpResData  = await SignUpApi(ReqData)
       //User情報を保存して/homeにリダイレクト
       //router.push('/home')
       console.log("SignUpApi",signUpResData)
-    }else{
-      //error情報を表示
-      console.log("error:", signUpResData.errorText)
+    }catch(e){
+      console.error(e)
     }
   }
 
