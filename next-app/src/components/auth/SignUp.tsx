@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import { SignUpApi, SignUpReqData, SignUpResData } from 'Api/Auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
 import { useRouter } from 'next/router'
@@ -9,15 +9,18 @@ type SignUpProps = {
 
 const SignUp: FC<SignUpProps> = (props) => {
   const router = useRouter()
+  const [name, setName] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [role, setRole] = useState<number>(-1)
 
   const SignUpSubmit = async (event: any) => {
     event.preventDefault();
-    const { name, email, password, role } = event.target.elements;
     const ReqData: SignUpReqData = {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      role: role.value,
+      name: name,
+      email: email,
+      password: password,
+      role: role,
     }
     try{
       const signUpResData: SignUpResData  = await SignUpApi(ReqData)
@@ -37,18 +40,19 @@ const SignUp: FC<SignUpProps> = (props) => {
             <Card.Body>
               <Form onSubmit={SignUpSubmit}>
                 <FloatingLabel controlId="name" label="User Name" className="mb-3">
-                  <Form.Control required type="text" placeholder="text"/>
+                  <Form.Control required type="text" placeholder="text" value={name} onChange={(e) => setName(e.target.value)} />
                 </FloatingLabel>
                 <FloatingLabel controlId="email" label="Email address" className="mb-3">
-                  <Form.Control required type="email" placeholder="Email@example.com" />
+                  <Form.Control required type="email" placeholder="Email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </FloatingLabel>
                 <FloatingLabel controlId="password" label="Password" className="mb-3">
-                  <Form.Control required type="password" placeholder="Password" />
+                  <Form.Control required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </FloatingLabel>
                 <Form.Group controlId="role">
                   <Form.Label>User Type</Form.Label>
                   <Form.Check
                     required
+                    onClick={ (e) => setRole(Number(e.currentTarget.value))}
                     type="radio"
                     label="User"
                     name="role"
@@ -56,6 +60,7 @@ const SignUp: FC<SignUpProps> = (props) => {
                     id="1"
                   />
                   <Form.Check
+                    onClick={ (e) => setRole(Number(e.currentTarget.value))}
                     type="radio"
                     label="Financial Planner"
                     name="role"
