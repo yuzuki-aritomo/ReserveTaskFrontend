@@ -2,6 +2,10 @@
   width: 80%;
   margin: 0 auto;
 }
+.week_calendar_title {
+  line-height: 40px;
+  margin: 0;
+}
 .cal_time {
   border-bottom: solid 1px rgb(218, 218, 218);;
   height: 50px;

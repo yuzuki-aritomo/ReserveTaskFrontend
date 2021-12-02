@@ -2,6 +2,7 @@ import { FC, useState, createContext ,useContext} from 'react'
 import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
 import { ReceptionData } from 'Models/ReceptionModel'
+import { Button } from "react-bootstrap"
 
 type CalTimeProps = {
   day: string,
@@ -14,26 +15,26 @@ const CalTime: FC<CalTimeProps> = (props) => {
   dt.setMinutes(Number(time.split(":")[1]))
   const dt_ISOS = dt.toISOString()
   const receptions = useContext(ReceptionContext)
-  if (receptions.some(r => r.start===dt_ISOS && r.reserved)){
+  const reception = receptions.filter(r => r.start===dt_ISOS)
+  if (reception.length==0){
     return(
       <div className={ styles.cal_time }>
-        予約されています
       </div>
     )
-  }else if (receptions.some(r => r.start===dt_ISOS)){
+  }else if (reception[0].reserved){
     return(
       <div className={ styles.cal_time }>
-        予約受付
+        { reception[0].user_name }
+      </div>
+    )
+  }else{
+    return(
+      <div className={ styles.cal_time }>
+        予約受付中
       </div>
     )
   }
-  return(
-    <div className={ styles.cal_time }>
-      
-    </div>
-  )
 }
-
 
 type CalDayProps = {
   titleFlag: boolean,
@@ -83,20 +84,18 @@ type CalWeekProps = {
 const CalWeek: FC<CalWeekProps> = (props) => {
   return(
     <div>
-      <div className={styles.cal}>
-        <Row className="justify-content-md-center mt-4">
-          <Col md={4} className={ styles.cal_day }>
-            <CalDay titleFlag={ true } day="" />
-          </Col>
-          { 
-            props.weekDays.map((value, index) => 
-              <Col md={4} className={ styles.cal_day } key={ index }>
-                <CalDay titleFlag={ false } day={ value }/>
-              </Col>
-            )
-          }
-        </Row>
-      </div>
+      <Row className="justify-content-md-center mt-4">
+        <Col md={4} className={ styles.cal_day }>
+          <CalDay titleFlag={ true } day="" />
+        </Col>
+        { 
+          props.weekDays.map((value, index) => 
+            <Col md={4} className={ styles.cal_day } key={ index }>
+              <CalDay titleFlag={ false } day={ value }/>
+            </Col>
+          )
+        }
+      </Row>
     </div>
   )
 }
@@ -138,9 +137,14 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
   return(
     <div>
       <ReceptionContext.Provider value={ props.receptions }>
-        <h1 onClick={ toNextWeek }>次の週</h1>
-        <h1 onClick={ toPrevWeek }>前の週</h1>
-        <CalWeek weekDays={ week } />
+        <div className={styles.cal}>
+          <div className="d-flex justify-content-between mt-4" >
+            <Button variant="outline-primary" onClick={ toPrevWeek } >Previous Week</Button>
+            <p className={styles.week_calendar_title}> WEEK CALENDAR </p>
+            <Button variant="outline-primary" onClick={ toNextWeek }>Next Week</Button>
+          </div>
+          <CalWeek weekDays={ week } />
+        </div>
       </ReceptionContext.Provider>
     </div>
   )
