@@ -36,10 +36,16 @@ export const SignUpApi= async (ReqData: SignUpReqData)=> {
     if (!response.ok){
       throw new Error("エラーが発生しました。")
     }
+    localStorage.setItem("uid", response.headers.get("uid") ?? "")
+    localStorage.setItem("access-token", response.headers.get("access-token") ?? "")
+    localStorage.setItem("client", response.headers.get("client") ?? "")
     return response.json()
   })
   .then(data => {
-    return data as SignUpResData
+    const res: SignUpResData = data as SignUpResData
+    localStorage.setItem("name", res.data.name)
+    localStorage.setItem("role", res.data.role.toString())
+    return 
   })
   .catch((error) => {
     throw new Error("エラーが発生しました。")
