@@ -6,7 +6,6 @@ export interface SignUpReqData {
   role: number;
 }
 export interface SignUpResData {
-  status: string;
   data: {
     id: number;
     email: string;
