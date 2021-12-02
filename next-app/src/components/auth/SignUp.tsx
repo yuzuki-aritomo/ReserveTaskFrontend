@@ -1,7 +1,8 @@
-import { FC, useState } from "react"
+import { FC, useState, useContext } from "react"
 import { SignUpApi, SignUpReqData, SignUpResData } from 'Api/Auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
 import { useRouter } from 'next/router'
+import { setUserContext  } from 'src/Provider/UserProvider'
 
 type SignUpProps = {
   toPath?: string;
@@ -13,6 +14,7 @@ const SignUp: FC<SignUpProps> = (props) => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [role, setRole] = useState<number>(-1)
+  const setUser = useContext(setUserContext)
 
   const SignUpSubmit = async (event: any) => {
     event.preventDefault();
@@ -25,6 +27,11 @@ const SignUp: FC<SignUpProps> = (props) => {
     try{
       const signUpResData: SignUpResData  = await SignUpApi(ReqData)
       //User情報を保存して/homeにリダイレクト
+      setUser({
+        name: signUpResData.data.name,
+        role: signUpResData.data.role,
+        email: signUpResData.data.email
+      })
       const path = props.toPath ?? "/"
       router.push(path)
       console.log("SignUpApi",signUpResData)
