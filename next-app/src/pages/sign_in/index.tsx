@@ -3,16 +3,19 @@ import Link from 'next/link'
 import { SignInApi, SignInReqData, SignInResData } from 'Api/Auth/SignInApi'
 import { useRouter } from 'next/router'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
+import { useState } from 'react'
 
 const SignInPage: NextPage = () => {
   const router = useRouter()
+  
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
 
   const SignInSubmit = async (event: any) => {
     event.preventDefault();
-    const { email, password } = event.target.elements;
     const signInReqData: SignInReqData = {
-      email: email.value,
-      password: password.value,
+      email: email,
+      password: password,
     }
     try{
       const signInResData: SignInResData  = await SignInApi(signInReqData)
@@ -35,10 +38,10 @@ const SignInPage: NextPage = () => {
             <Card.Body>
               <Form onSubmit={SignInSubmit}>
                 <FloatingLabel controlId="email" label="Email address" className="mb-3">
-                  <Form.Control required type="email" placeholder="Email@example.com" />
+                  <Form.Control required type="email" placeholder="Email@example.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 </FloatingLabel>
                 <FloatingLabel controlId="password" label="Password" className="mb-3">
-                  <Form.Control required type="password" placeholder="Password" />
+                  <Form.Control required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </FloatingLabel>
                 <Button className="mt-2" variant="primary" type="submit">
                   Sign In
