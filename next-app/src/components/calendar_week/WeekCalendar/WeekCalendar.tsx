@@ -101,6 +101,7 @@ const CalWeek: FC<CalWeekProps> = (props) => {
 }
 
 const ReceptionContext = createContext<ReceptionData[]>([])
+const EditFlagContext = createContext<Boolean>(false)
 
 type WeekCalendarProps = {
   receptions: ReceptionData[]
@@ -134,9 +135,14 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
     }
     setWeek(Week)
   }
+  const [EditFlag, setEditFlag] = useState<boolean>(false)
+  const toEditMode = () => setEditFlag(true)
+  const cancelEditMode = () => setEditFlag(false)
+  const RegisterReceptions = () =>{}
   return(
     <div>
       <ReceptionContext.Provider value={ props.receptions }>
+      <EditFlagContext.Provider value={ EditFlag }>
         <div className={styles.cal}>
           <div className="d-flex justify-content-between mt-4" >
             <Button variant="outline-primary" onClick={ toPrevWeek } >Previous Week</Button>
@@ -144,7 +150,19 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
             <Button variant="outline-primary" onClick={ toNextWeek }>Next Week</Button>
           </div>
           <CalWeek weekDays={ week } />
+          <div className="d-flex justify-content-end mt-4">
+            { !EditFlag &&
+              <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
+            }
+            { EditFlag &&
+              <>
+                <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
+                <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
+              </>
+            }
+          </div>
         </div>
+        </EditFlagContext.Provider>
       </ReceptionContext.Provider>
     </div>
   )
