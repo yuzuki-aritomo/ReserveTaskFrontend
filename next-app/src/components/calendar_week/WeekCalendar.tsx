@@ -1,8 +1,8 @@
-import { FC, useState,　useContext, Dispatch, SetStateAction} from 'react'
+import { FC, useState, useContext, Dispatch, SetStateAction} from 'react'
 import styles from "styles/calWeek.module.css"
 import { ReceptionData } from 'Models/ReceptionModel'
 import { Button } from "react-bootstrap"
-import { WeekCalendarProvider, EditFlagContext, setEditFlagContext } from 'src/components/calendar_week/WeekCalendarProvider'
+import { WeekCalendarProvider, EditFlagContext, setEditFlagContext, setPostReceptionsContext } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 
 //カレンダー本体
@@ -71,9 +71,15 @@ const CalWeekTop:FC<CalWeekTopProps> = ( props ) => {
 const CalWeekBottom: FC = () => {
   const EditFlag = useContext(EditFlagContext)
   const setEditFlag = useContext(setEditFlagContext)
+  const setPostReceptions = useContext(setPostReceptionsContext)
   const toEditMode = () => setEditFlag(true)
-  const cancelEditMode = () => setEditFlag(false)
-  const RegisterReceptions = () =>{}
+  const cancelEditMode = () => {
+    setEditFlag(false)
+    setPostReceptions([])
+  }
+  const RegisterReceptions = () =>{
+    //post receptions
+  }
   return(
     <div className="d-flex justify-content-end mt-4">
       { !EditFlag &&

@@ -1,7 +1,50 @@
-import { FC, useContext} from 'react'
+import { FC, useContext } from 'react'
 import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
+import { ReceptionData } from 'Models/ReceptionModel'
 import { ReceptionContext } from 'src/components/calendar_week/WeekCalendarProvider'
+import { EditFlagContext, PostReceptionsContext, setPostReceptionsContext } from 'src/components/calendar_week/WeekCalendarProvider'
+
+//受付時間編集中
+type EditCalTime = {
+  reception:  ReceptionData | undefined;
+  dt: string;
+}
+const EditCalTime: FC<EditCalTime> = ( props ) =>{
+  const postReceptions = useContext(PostReceptionsContext)
+  const setPostReceptions = useContext(setPostReceptionsContext)
+  const handlePostReceptions = () => {
+    if( postReceptions.includes(props.dt) ){
+      const newPostReceptions = postReceptions.filter(r => r!==props.dt)
+      setPostReceptions(newPostReceptions)
+    }else{
+      setPostReceptions([ ...postReceptions, props.dt ])
+    }
+    console.log(postReceptions)
+  }
+  if (!props.reception){
+    return(
+      <div className={ styles.cal_time } onClick={ handlePostReceptions }>
+        {postReceptions.includes(props.dt) &&
+          '○'
+        }
+      </div>
+    )
+  }else if (props.reception.reserved){
+    return(
+      <div className={ styles.cal_time }>
+        予約完了
+      </div>
+    )
+  }else{
+    return(
+      <div className={ styles.cal_time }>
+        予約受付中
+      </div>
+    )
+  }
+}
+
 
 //時間単位
 type CalTimeProps = {
@@ -15,16 +58,20 @@ const CalTime: FC<CalTimeProps> = (props) => {
   dt.setMinutes(Number(time.split(":")[1]))
   const dt_ISOS = dt.toISOString()
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.filter(r => r.start===dt_ISOS)
-  if (reception.length==0){
+  const reception = receptions.find(r => r.start===dt_ISOS)
+
+  const EditFlag = useContext(EditFlagContext)
+  if(EditFlag){
+    return <EditCalTime reception={ reception } dt={dt_ISOS} />
+  }else if (!reception){
     return(
       <div className={ styles.cal_time }>
       </div>
     )
-  }else if (reception[0].reserved){
+  }else if (reception.reserved){
     return(
       <div className={ styles.cal_time }>
-        { reception[0].user_name }
+        { reception.user_name }
       </div>
     )
   }else{
