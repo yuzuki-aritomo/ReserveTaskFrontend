@@ -1,8 +1,14 @@
 import { FC, useState, useContext, Dispatch, SetStateAction} from 'react'
 import styles from "styles/calWeek.module.css"
 import { ReceptionData } from 'Models/ReceptionModel'
-import { Button } from "react-bootstrap"
-import { WeekCalendarProvider, EditFlagContext, setEditFlagContext, setPostReceptionsContext } from 'src/components/calendar_week/WeekCalendarProvider'
+import { Button, Card } from "react-bootstrap"
+import { 
+  WeekCalendarProvider, 
+  EditFlagContext, 
+  setEditFlagContext, 
+  setPostReceptionsContext,
+  DetailReceptionContext,
+} from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 
 //カレンダー本体
@@ -24,16 +30,73 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
   return(
     <div>
       <WeekCalendarProvider receptions={ props.receptions } >
-        <div className={styles.cal}>
-          <CalWeekTop week={ week } setWeek={ setWeek } />
-          <CalWeek weekDays={ week } />
-          <CalWeekBottom />
+        <div className={ styles.hole_cal }>
+          <div className={styles.cal}>
+            <CalWeekTop week={ week } setWeek={ setWeek } />
+            <CalWeek weekDays={ week } />
+            <CalWeekBottom />
+          </div>
+          <div className={ styles.detail }>
+            <CalDetailTop />
+            <CalDetail />
+          </div>
         </div>
       </WeekCalendarProvider>
     </div>
   )
 }
 export default WeekCalendar
+
+const CalDetailTop: FC = () => {
+  return(
+    <div className="d-flex justify-content-center mt-4" >
+      <p className={styles.week_calendar_title}> Receptions Detail </p>
+    </div>
+  )
+}
+
+const CalDetail: FC = () => {
+  const reception = useContext(DetailReceptionContext)
+  const formatDate = (start: string, end: string) => {
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+    const dt = startDate.getMonth() + "/"+ endDate.getDate()
+    const startTime = startDate.getHours()+":"+startDate.getMinutes().toString().padStart(2, '0')
+    const endTime = endDate.getHours()+":"+endDate.getMinutes().toString().padStart(2, '0')
+    const res = dt + "  " + startTime + "~" + endTime
+    return res
+  }
+  const deleteReception = () => {
+    //delete Reception
+  }
+  const cancelReception = () => {
+    //cancel Reception
+  }
+  return(
+    <div className="mt-4 d-flex justify-content-center">
+      {reception && //reception情報がある時のみ
+        <Card className="w-75">
+          <Card.Header as="h5">予約情報詳細</Card.Header>
+          <Card.Body>
+            <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
+              {reception.reserved && //予約完了
+                <>
+                  <Card.Text>User: {reception.user_name } </Card.Text>
+                  <Button variant="outline-danger">予約キャンセル</Button>
+                </>
+              }
+              { !reception.reserved && //予約受付中
+                <>
+                  <Card.Text> 予約受付中 </Card.Text>
+                  <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
+                </>
+              }
+          </Card.Body>
+        </Card>
+      }
+    </div>
+  )
+}
 
 //カレンダー上部
 type CalWeekTopProps = {

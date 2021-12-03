@@ -3,7 +3,9 @@ import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
 import { ReceptionData } from 'Models/ReceptionModel'
 import { ReceptionContext } from 'src/components/calendar_week/WeekCalendarProvider'
-import { EditFlagContext, PostReceptionsContext, setPostReceptionsContext } from 'src/components/calendar_week/WeekCalendarProvider'
+import { 
+  EditFlagContext, PostReceptionsContext, setPostReceptionsContext, setDetailReceptionContext
+} from 'src/components/calendar_week/WeekCalendarProvider'
 
 //受付時間編集中
 type EditCalTime = {
@@ -20,7 +22,6 @@ const EditCalTime: FC<EditCalTime> = ( props ) =>{
     }else{
       setPostReceptions([ ...postReceptions, props.dt ])
     }
-    console.log(postReceptions)
   }
   if (!props.reception){
     return(
@@ -52,6 +53,7 @@ type CalTimeProps = {
   time: string,
 }
 const CalTime: FC<CalTimeProps> = (props) => {
+  const setDetailReception = useContext (setDetailReceptionContext)
   const dt = new Date(props.day)
   const time = props.time.slice(0, -1)
   dt.setHours(Number(time.split(":")[0]))
@@ -70,13 +72,13 @@ const CalTime: FC<CalTimeProps> = (props) => {
     )
   }else if (reception.reserved){
     return(
-      <div className={ styles.cal_time }>
-        { reception.user_name }
+      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
+        予約完了
       </div>
     )
   }else{
     return(
-      <div className={ styles.cal_time }>
+      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
         予約受付中
       </div>
     )
@@ -131,7 +133,7 @@ type CalWeekProps = {
 }
 export const CalWeek: FC<CalWeekProps> = (props) => {
   return(
-    <div>
+    <div className="w-100 m-0">
       <Row className="justify-content-md-center mt-4">
         <Col md={4} className={ styles.cal_day }>
           <CalDay titleFlag={ true } day="" />
