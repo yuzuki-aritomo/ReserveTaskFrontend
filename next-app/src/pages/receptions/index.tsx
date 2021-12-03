@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import WeekCalendar from 'src/components/calendar_week/WeekCalendar/WeekCalendar'
+import WeekCalendar from 'src/components/calendar_week/WeekCalendar'
 import { ReceptionData } from 'Models/ReceptionModel'
 import { GetReceptionsApi } from 'Api/Receptions/GetReceptionsApi'
 import { GetReceptionsApiResData } from "Api/Receptions/Models/GetReceptionsModel"

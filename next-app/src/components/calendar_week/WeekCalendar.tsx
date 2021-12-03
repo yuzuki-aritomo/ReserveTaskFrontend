@@ -1,9 +1,11 @@
-import { FC, useState, createContext ,useContext} from 'react'
+import { FC, useState, createContext ,useContext, Dispatch, SetStateAction} from 'react'
 import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
 import { ReceptionData } from 'Models/ReceptionModel'
 import { Button } from "react-bootstrap"
 
+
+import { ReceptionContext } from 'src/components/calendar_week/WeekCalendarProvider'
 type CalTimeProps = {
   day: string,
   time: string,
@@ -100,8 +102,8 @@ const CalWeek: FC<CalWeekProps> = (props) => {
   )
 }
 
-const ReceptionContext = createContext<ReceptionData[]>([])
-const EditFlagContext = createContext<Boolean>(false)
+
+import { WeekCalendarProvider, EditFlagContext, setEditFlagContext } from 'src/components/calendar_week/WeekCalendarProvider'
 
 type WeekCalendarProps = {
   receptions: ReceptionData[]
@@ -116,8 +118,27 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
     dt.setDate(dt.getDate() + 1);
     weekDays[i] = dt.toISOString();
   }
-  //日付変更
+  //日付初期化
   const [week, setWeek] = useState<string[]>(weekDays)
+  return(
+    <div>
+      <WeekCalendarProvider receptions={ props.receptions } >
+        <div className={styles.cal}>
+          <CalWeekTop week={ week } setWeek={ setWeek } />
+          <CalWeek weekDays={ week } />
+          <CalWeekBottom />
+        </div>
+      </WeekCalendarProvider>
+    </div>
+  )
+}
+export default WeekCalendar
+
+type CalWeekTopProps = {
+  week: string[],
+  setWeek: Dispatch<SetStateAction<string[]>>
+}
+const CalWeekTop:FC<CalWeekTopProps> = ( props ) => {
   const toNextWeek = () => {
     changeWeek(true)
   }
@@ -125,7 +146,7 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
     changeWeek(false)
   }
   const changeWeek = (next_flag : boolean) => {
-    const dt = new Date(week[0])
+    const dt = new Date(props.week[0])
     const diffDays = next_flag ? 6 : -8
     dt.setDate(dt.getDate() + diffDays)
     var Week: string[] = Array(7)
@@ -133,39 +154,35 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
       dt.setDate(dt.getDate()+1)
       Week[i] = dt.toISOString()
     }
-    setWeek(Week)
+    props.setWeek(Week)
   }
-  const [EditFlag, setEditFlag] = useState<boolean>(false)
-  const toEditMode = () => setEditFlag(true)
-  const cancelEditMode = () => setEditFlag(false)
-  const RegisterReceptions = () =>{}
   return(
-    <div>
-      <ReceptionContext.Provider value={ props.receptions }>
-      <EditFlagContext.Provider value={ EditFlag }>
-        <div className={styles.cal}>
-          <div className="d-flex justify-content-between mt-4" >
-            <Button variant="outline-primary" onClick={ toPrevWeek } >Previous Week</Button>
-            <p className={styles.week_calendar_title}> WEEK CALENDAR </p>
-            <Button variant="outline-primary" onClick={ toNextWeek }>Next Week</Button>
-          </div>
-          <CalWeek weekDays={ week } />
-          <div className="d-flex justify-content-end mt-4">
-            { !EditFlag &&
-              <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
-            }
-            { EditFlag &&
-              <>
-                <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
-                <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
-              </>
-            }
-          </div>
-        </div>
-        </EditFlagContext.Provider>
-      </ReceptionContext.Provider>
+    <div className="d-flex justify-content-between mt-4" >
+      <Button variant="outline-primary" onClick={ toPrevWeek } >Previous Week</Button>
+      <p className={styles.week_calendar_title}> WEEK CALENDAR </p>
+      <Button variant="outline-primary" onClick={ toNextWeek }>Next Week</Button>
     </div>
   )
 }
 
-export default WeekCalendar
+
+const CalWeekBottom: FC = () => {
+  const EditFlag = useContext(EditFlagContext)
+  const setEditFlag = useContext(setEditFlagContext)
+  const toEditMode = () => setEditFlag(true)
+  const cancelEditMode = () => setEditFlag(false)
+  const RegisterReceptions = () =>{}
+  return(
+    <div className="d-flex justify-content-end mt-4">
+      { !EditFlag &&
+        <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
+      }
+      { EditFlag &&
+        <>
+          <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
+          <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
+        </>
+      }
+    </div>
+  )
+}
