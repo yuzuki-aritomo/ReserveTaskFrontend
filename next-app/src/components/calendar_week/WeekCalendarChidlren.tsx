@@ -63,6 +63,14 @@ const CalTime: FC<CalTimeProps> = (props) => {
   const reception = receptions.find(r => r.start===dt_ISOS)
 
   const EditFlag = useContext(EditFlagContext)
+  
+  //受付時間外
+  const h = dt.getHours()
+  const day = dt.getDay()
+  if( day === 0 || (day===6 && ( h<11 || 15<=h ))){
+    return <div className={ `${styles.cal_time} ${styles.cal_outside_hours}` }></div>
+  }
+
   if(EditFlag){
     return <EditCalTime reception={ reception } dt={dt_ISOS} />
   }else if (!reception){
