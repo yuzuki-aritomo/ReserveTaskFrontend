@@ -1,9 +1,10 @@
-import { SignOutResData, SignOutApiResData } from "Api/Auth/Models/SignOutApiModel"
-
 const baseUrl = 'http://localhost:3001/'
+export interface SignOutResData {
+  success: string
+}
 
 export const SignOutApi= async ()=> {
-  const res: Response = await fetch(baseUrl+'auth/sign_out/', {
+  await fetch(baseUrl+'auth/sign_out/', {
     method: 'POST',
     mode: 'cors',
     headers: {
@@ -16,19 +17,21 @@ export const SignOutApi= async ()=> {
       'client': localStorage.getItem("client") ?? "",
     })
   })
-  
-  if(res.ok){
-    const signOutResData = await res.json() as SignOutResData
-    const signOutApiResData: SignOutApiResData = {
-      ok: true,
-      res: signOutResData,
+  .then(response=> {
+    if(!response.ok){
+      throw new Error("エラーが発生しました。")
     }
-    return signOutApiResData
-  }else{
-    const signOutApiResData: SignOutApiResData = {
-      ok: false,
-      errorText: res.statusText,
-    }
-    return signOutApiResData
-  }
+    localStorage.removeItem("uid")
+    localStorage.removeItem("access-token")
+    localStorage.removeItem("client")
+    localStorage.removeItem("name")
+    localStorage.removeItem("role")
+    return response.json()
+  })
+  .then(data => {
+    return data as SignOutResData
+  })
+  .catch(e=>{
+    throw new Error("エラーが発生しました。")
+  })
 }

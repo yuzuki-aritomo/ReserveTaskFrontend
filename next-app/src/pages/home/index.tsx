@@ -1,19 +1,16 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import { SignOutApiResData } from 'Api/Auth/Models/SignOutApiModel'
 import { SignOutApi } from 'Api/Auth/SignOutApi'
-import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
+import { Row, Col, Card, Form, Button } from "react-bootstrap"
 
 const HomePage: NextPage = () => {
 
   const SignOutSubmit = async (event: any) => {
     event.preventDefault();
-    const signOutApiResData: SignOutApiResData  = await SignOutApi()
-    if(signOutApiResData.ok){
-      console.log("Success SignInApi:",signOutApiResData)
-    }else{
-      //error情報を表示
-      console.log("SignInError:", signOutApiResData.errorText)
+    try{
+      await SignOutApi()
+    }catch(e){
+      console.error(e)
     }
   }
   return(
