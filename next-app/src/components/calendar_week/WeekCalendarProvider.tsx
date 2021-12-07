@@ -14,6 +14,10 @@ export const DetailReceptionContext = createContext<ReceptionData | null>(null)
 export const setDetailReceptionContext = createContext<Dispatch<SetStateAction<ReceptionData | null>>>(
   ()=> undefined
 )
+export const ModeContext = createContext<number>(0)
+export const setModeContext = createContext<Dispatch<SetStateAction<number>>>(
+  ()=> undefined
+)
 
 type WeekCalendarProviderProps = {
   children: ReactNode,
@@ -24,6 +28,7 @@ export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( props ) => 
   const [EditFlag, setEditFlag] = useState<boolean>(false)
   const [postReceptions, setPostReceptions] = useState<string[]>([])
   const [DetailReception, setDetailReception] = useState<ReceptionData | null>(null)
+  const [mode , setMode] = useState<number>(0)
   return(
     <ReceptionContext.Provider value={ props.receptions } >
       <EditFlagContext.Provider value={EditFlag} >
@@ -32,7 +37,11 @@ export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( props ) => 
             <setPostReceptionsContext.Provider value={ setPostReceptions }>
               <DetailReceptionContext.Provider value={DetailReception}>
                 <setDetailReceptionContext.Provider value={setDetailReception}>
-                  { props.children }
+                  <ModeContext.Provider value={mode}>
+                    <setModeContext.Provider value={setMode}>
+                      { props.children }
+                    </setModeContext.Provider>
+                  </ModeContext.Provider>
                 </setDetailReceptionContext.Provider>
               </DetailReceptionContext.Provider>
             </setPostReceptionsContext.Provider>

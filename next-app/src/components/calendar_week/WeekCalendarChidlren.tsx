@@ -1,51 +1,8 @@
 import { FC, useContext } from 'react'
 import { Row, Col } from "react-bootstrap"
 import styles from "styles/calWeek.module.css"
-import { ReceptionData } from 'Models/ReceptionModel'
-import { ReceptionContext } from 'src/components/calendar_week/WeekCalendarProvider'
-import { 
-  EditFlagContext, PostReceptionsContext, setPostReceptionsContext, setDetailReceptionContext
-} from 'src/components/calendar_week/WeekCalendarProvider'
-
-//受付時間編集中
-type EditCalTime = {
-  reception:  ReceptionData | undefined;
-  dt: string;
-}
-const EditCalTime: FC<EditCalTime> = ( props ) =>{
-  const postReceptions = useContext(PostReceptionsContext)
-  const setPostReceptions = useContext(setPostReceptionsContext)
-  const handlePostReceptions = () => {
-    if( postReceptions.includes(props.dt) ){
-      const newPostReceptions = postReceptions.filter(r => r!==props.dt)
-      setPostReceptions(newPostReceptions)
-    }else{
-      setPostReceptions([ ...postReceptions, props.dt ])
-    }
-  }
-  if (!props.reception){
-    return(
-      <div className={ styles.cal_time } onClick={ handlePostReceptions }>
-        {postReceptions.includes(props.dt) &&
-          '○'
-        }
-      </div>
-    )
-  }else if (props.reception.reserved){
-    return(
-      <div className={ styles.cal_time }>
-        予約完了
-      </div>
-    )
-  }else{
-    return(
-      <div className={ styles.cal_time }>
-        予約受付中
-      </div>
-    )
-  }
-}
-
+import { ModeContext} from 'src/components/calendar_week/WeekCalendarProvider'
+import { CalTimeFpReception, CalTimeUserReception, CalTimeUserReservation } from 'src/components/calendar_week/WeekCalendarTime'
 
 //時間単位
 type CalTimeProps = {
@@ -53,44 +10,26 @@ type CalTimeProps = {
   time: string,
 }
 const CalTime: FC<CalTimeProps> = (props) => {
-  const setDetailReception = useContext (setDetailReceptionContext)
+  const mode = useContext(ModeContext)
   const dt = new Date(props.day)
   const time = props.time.slice(0, -1)
   dt.setHours(Number(time.split(":")[0]))
   dt.setMinutes(Number(time.split(":")[1]))
-  const dt_ISOS = dt.toISOString()
-  const receptions = useContext(ReceptionContext)
-  const reception = receptions.find(r => r.start===dt_ISOS)
-
-  const EditFlag = useContext(EditFlagContext)
-  
+  const dt_ISO = dt.toISOString()
   //受付時間外
   const h = dt.getHours()
   const day = dt.getDay()
   if( day === 0 || (day===6 && ( h<11 || 15<=h ))){
     return <div className={ `${styles.cal_time} ${styles.cal_outside_hours}` }></div>
   }
-
-  if(EditFlag){
-    return <EditCalTime reception={ reception } dt={dt_ISOS} />
-  }else if (!reception){
-    return(
-      <div className={ styles.cal_time }>
-      </div>
-    )
-  }else if (reception.reserved){
-    return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
-        予約完了
-      </div>
-    )
-  }else{
-    return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
-        予約受付中
-      </div>
-    )
+  if(mode == 0){ // FP が予約確認と登録
+    return <CalTimeFpReception dt_ISO={dt_ISO} />
+  }else if(mode == 1){// User 予約可能日時を確認
+    return <CalTimeUserReception dt_ISO={dt_ISO}/>
+  }else if (mode == 2){// User 予約完了した一覧を確認
+    return <CalTimeUserReservation dt_ISO={dt_ISO}/>
   }
+  return <></>
 }
 
 //日単位
