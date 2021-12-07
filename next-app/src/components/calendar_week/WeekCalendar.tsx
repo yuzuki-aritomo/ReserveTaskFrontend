@@ -7,7 +7,7 @@ import {
   EditFlagContext, 
   setEditFlagContext, 
   setPostReceptionsContext,
-  DetailReceptionContext,
+  DetailReceptionsContext,
 } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 
@@ -56,7 +56,7 @@ const CalDetailTop: FC = () => {
 }
 
 const CalDetail: FC = () => {
-  const reception = useContext(DetailReceptionContext)
+  const receptions = useContext(DetailReceptionsContext)
   const formatDate = (start: string, end: string) => {
     const startDate = new Date(start)
     const endDate = new Date(end)
@@ -74,25 +74,27 @@ const CalDetail: FC = () => {
   }
   return(
     <div className="mt-4 d-flex justify-content-center">
-      {reception && //reception情報がある時のみ
-        <Card className="w-75">
-          <Card.Header as="h5">予約情報詳細</Card.Header>
-          <Card.Body>
-            <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
-              {reception.reserved && //予約完了
-                <>
-                  <Card.Text>User: {reception.user_name } </Card.Text>
-                  <Button variant="outline-danger">予約キャンセル</Button>
-                </>
-              }
-              { !reception.reserved && //予約受付中
-                <>
-                  <Card.Text> 予約受付中 </Card.Text>
-                  <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
-                </>
-              }
-          </Card.Body>
-        </Card>
+      {receptions && //receptions情報がある時のみ
+        receptions.map((reception, index) =>
+          <Card className="w-75" key={index}>
+            <Card.Header as="h5">予約情報詳細</Card.Header>
+            <Card.Body>
+              <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
+                {reception.reserved && //予約完了
+                  <>
+                    <Card.Text>User: {reception.user_name } </Card.Text>
+                    <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
+                  </>
+                }
+                { !reception.reserved && //予約受付中
+                  <>
+                    <Card.Text> 予約受付中 </Card.Text>
+                    <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
+                  </>
+                }
+            </Card.Body>
+          </Card>
+        )
       }
     </div>
   )

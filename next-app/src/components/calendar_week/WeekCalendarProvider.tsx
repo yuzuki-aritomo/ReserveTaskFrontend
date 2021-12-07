@@ -10,8 +10,8 @@ export const PostReceptionsContext = createContext<string[]>([])
 export const setPostReceptionsContext = createContext<Dispatch<SetStateAction<string[]>>>(
   ()=> undefined
 )
-export const DetailReceptionContext = createContext<ReceptionData | null>(null)
-export const setDetailReceptionContext = createContext<Dispatch<SetStateAction<ReceptionData | null>>>(
+export const DetailReceptionsContext = createContext<ReceptionData[] | null>(null)
+export const setDetailReceptionsContext = createContext<Dispatch<SetStateAction<ReceptionData[] | null>>>(
   ()=> undefined
 )
 export const ModeContext = createContext<number>(0)
@@ -27,7 +27,7 @@ type WeekCalendarProviderProps = {
 export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( props ) => {
   const [EditFlag, setEditFlag] = useState<boolean>(false)
   const [postReceptions, setPostReceptions] = useState<string[]>([])
-  const [DetailReception, setDetailReception] = useState<ReceptionData | null>(null)
+  const [DetailReceptions, setDetailReceptions] = useState<ReceptionData[] | null>(null)
   const [mode , setMode] = useState<number>(0)
   return(
     <ReceptionContext.Provider value={ props.receptions } >
@@ -35,15 +35,15 @@ export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( props ) => 
         <setEditFlagContext.Provider value={setEditFlag}>
           <PostReceptionsContext.Provider value={ postReceptions }>
             <setPostReceptionsContext.Provider value={ setPostReceptions }>
-              <DetailReceptionContext.Provider value={DetailReception}>
-                <setDetailReceptionContext.Provider value={setDetailReception}>
+              <DetailReceptionsContext.Provider value={DetailReceptions}>
+                <setDetailReceptionsContext.Provider value={setDetailReceptions}>
                   <ModeContext.Provider value={mode}>
                     <setModeContext.Provider value={setMode}>
                       { props.children }
                     </setModeContext.Provider>
                   </ModeContext.Provider>
-                </setDetailReceptionContext.Provider>
-              </DetailReceptionContext.Provider>
+                </setDetailReceptionsContext.Provider>
+              </DetailReceptionsContext.Provider>
             </setPostReceptionsContext.Provider>
           </PostReceptionsContext.Provider>
         </setEditFlagContext.Provider>

@@ -2,7 +2,7 @@ import { FC, useContext } from 'react'
 import styles from "styles/calWeek.module.css"
 import { ReceptionData } from 'Models/ReceptionModel'
 import { 
-  ReceptionContext, EditFlagContext, PostReceptionsContext, setPostReceptionsContext, setDetailReceptionContext
+  ReceptionContext, EditFlagContext, PostReceptionsContext, setPostReceptionsContext, setDetailReceptionsContext
 } from 'src/components/calendar_week/WeekCalendarProvider'
 
 type CalTimeProps = {
@@ -10,26 +10,30 @@ type CalTimeProps = {
 }
 // FP が予約確認と登録
 export const CalTimeFpReception: FC<CalTimeProps> = ( props ) => {
-  const setDetailReception = useContext (setDetailReceptionContext)
+  const setDetailReceptions = useContext (setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.find(r => r.start===props.dt_ISO)
+  const reception = receptions.filter(r => r.start===props.dt_ISO)
   const EditFlag = useContext(EditFlagContext)
   if(EditFlag){
-    return <EditCalTime reception={ reception } dt={props.dt_ISO} />
-  }else if (!reception){
+    if(reception.length === 0 ){
+      return <EditCalTime reception={ undefined } dt={props.dt_ISO} />
+    }
+    return <EditCalTime reception={ reception[0] } dt={props.dt_ISO} />
+  }
+  if (reception.length === 0){
     return(
       <div className={ styles.cal_time }>
       </div>
     )
-  }else if (reception.reserved){
+  }else if (reception[0].reserved){
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
+      <div className={ styles.cal_time } onClick={ ()=> setDetailReceptions(reception)  }>
         予約完了
       </div>
     )
   }else{
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
+      <div className={ styles.cal_time } onClick={ ()=> setDetailReceptions(reception) }>
         予約受付中
       </div>
     )
@@ -76,24 +80,18 @@ const EditCalTime: FC<EditCalTime> = ( props ) =>{
 
 // User 予約可能日時を確認
 export const CalTimeUserReception: FC<CalTimeProps> = ( props ) => {
-  const setDetailReception = useContext (setDetailReceptionContext)
+  const setDetailReceptions = useContext (setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.find(r => r.start===props.dt_ISO)
-  if (!reception){
+  const reception = receptions.filter(r => r.start===props.dt_ISO)
+  if (reception.length===0){
     return(
       <div className={ styles.cal_time }>
       </div>
     )
-  }else if (reception.reserved){
-    return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
-        予約完了
-      </div>
-    )
   }else{
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
-        予約受付中
+      <div className={ styles.cal_time } onClick={ ()=> setDetailReceptions(reception) }>
+        予約空き{ reception.length }件
       </div>
     )
   }
@@ -101,24 +99,18 @@ export const CalTimeUserReception: FC<CalTimeProps> = ( props ) => {
 
 // User 予約完了した一覧を確認
 export const CalTimeUserReservation: FC<CalTimeProps> = ( props ) => {
-  const setDetailReception = useContext (setDetailReceptionContext)
+  const setDetailReceptions = useContext(setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.find(r => r.start===props.dt_ISO)
-  if (!reception){
+  const reception = receptions.filter(r => r.start===props.dt_ISO)
+  if (reception.length===0){
     return(
       <div className={ styles.cal_time }>
       </div>
     )
-  }else if (reception.reserved){
-    return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
-        予約完了
-      </div>
-    )
   }else{
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailReception(reception) }>
-        予約受付中
+      <div className={ styles.cal_time } onClick={ ()=> setDetailReceptions(reception) }>
+        予約完了
       </div>
     )
   }
