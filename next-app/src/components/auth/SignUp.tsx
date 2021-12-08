@@ -3,11 +3,7 @@ import { SignUpApi, SignUpReqData, SignUpResData } from 'Api/Auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
 import { useRouter } from 'next/router'
 
-type SignUpProps = {
-  toPath?: string;
-}
-
-const SignUp: FC<SignUpProps> = ({ toPath }) => {
+const SignUp: FC = () => {
   const router = useRouter()
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -25,8 +21,7 @@ const SignUp: FC<SignUpProps> = ({ toPath }) => {
     try{
       const signUpResData: SignUpResData  = await SignUpApi(ReqData)
       //User情報を保存して/homeにリダイレクト
-      const path = toPath ?? "/"
-      router.push(path)
+      router.push("/home")
       console.log("SignUpApi",signUpResData)
     }catch(e){
       console.error(e)
@@ -78,6 +73,5 @@ const SignUp: FC<SignUpProps> = ({ toPath }) => {
       </Row>
   )
 }
-
 
 export default SignUp
