@@ -1,4 +1,4 @@
-import { FC, useState, MouseEvent, FormEvent } from 'react'
+import { FC, useState, MouseEvent, FormEvent, ChangeEvent } from 'react'
 import { SignUpApi, SignUpReqData, SignUpResData } from 'src/api/auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from 'react-bootstrap'
 import { useRouter } from 'next/router'
@@ -40,7 +40,7 @@ return (
                   type='text'
                   placeholder='text'
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                 />
               </FloatingLabel>
               <FloatingLabel controlId='email' label='Email address' className='mb-3'>
@@ -49,7 +49,7 @@ return (
                   type='email'
                   placeholder='Email@example.com'
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 />
               </FloatingLabel>
               <FloatingLabel controlId='password' label='Password' className='mb-3'>
@@ -58,7 +58,7 @@ return (
                   type='password'
                   placeholder='Password'
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
               </FloatingLabel>
               <Form.Group controlId='role'>
