@@ -1,4 +1,4 @@
-import { baseUrl } from "Api/ApiConfig"
+import { baseUrl } from "src/api/ApiConfig"
 export interface SignUpReqData {
   email: string;
   password: string;

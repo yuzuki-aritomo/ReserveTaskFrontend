@@ -1,5 +1,5 @@
 import { FC, useState, MouseEvent, FormEvent } from "react"
-import { SignUpApi, SignUpReqData, SignUpResData } from 'Api/Auth/SignUpApi'
+import { SignUpApi, SignUpReqData, SignUpResData } from 'src/api/auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
 import { useRouter } from 'next/router'
 
@@ -9,7 +9,6 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [role, setRole] = useState<number>(-1)
-
   const SignUpSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const ReqData: SignUpReqData = {
