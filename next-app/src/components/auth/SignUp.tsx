@@ -7,7 +7,7 @@ type SignUpProps = {
   toPath?: string;
 }
 
-const SignUp: FC<SignUpProps> = (props) => {
+const SignUp: FC<SignUpProps> = ({ toPath }) => {
   const router = useRouter()
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -25,7 +25,7 @@ const SignUp: FC<SignUpProps> = (props) => {
     try{
       const signUpResData: SignUpResData  = await SignUpApi(ReqData)
       //User情報を保存して/homeにリダイレクト
-      const path = props.toPath ?? "/"
+      const path = toPath ?? "/"
       router.push(path)
       console.log("SignUpApi",signUpResData)
     }catch(e){
