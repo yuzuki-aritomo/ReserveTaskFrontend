@@ -7,7 +7,7 @@ type SignInProps = {
   toPath?: string;
 }
 
-const SignIn: FC<SignInProps> = (props) => {
+const SignIn: FC<SignInProps> = ({ toPath }) => {
   const router = useRouter()
   
   const [email, setEmail] = useState<string>("")
@@ -22,7 +22,7 @@ const SignIn: FC<SignInProps> = (props) => {
     try{
       const signInResData: SignInResData  = await SignInApi(signInReqData)
       //User情報を保存して/homeにリダイレクト
-      const path = props.toPath ?? "/"
+      const path = toPath ?? "/"
       router.push(path)
       console.log("Success SignInApi:",signInResData)
     }catch(e){
