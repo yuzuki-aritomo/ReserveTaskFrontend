@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useState, MouseEvent, FormEvent } from "react"
 import { SignUpApi, SignUpReqData, SignUpResData } from 'Api/Auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
 import { useRouter } from 'next/router'
@@ -10,7 +10,7 @@ const SignUp: FC = () => {
   const [password, setPassword] = useState<string>("")
   const [role, setRole] = useState<number>(-1)
 
-  const SignUpSubmit = async (event: any) => {
+  const SignUpSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const ReqData: SignUpReqData = {
       name: name,
@@ -47,7 +47,7 @@ const SignUp: FC = () => {
                   <Form.Label>User Type</Form.Label>
                   <Form.Check
                     required
-                    onClick={ (e) => setRole(Number(e.currentTarget.value))}
+                    onClick={ (e: MouseEvent<HTMLInputElement>) => setRole(Number(e.currentTarget.value))}
                     type="radio"
                     label="User"
                     name="role"
@@ -55,7 +55,7 @@ const SignUp: FC = () => {
                     id="1"
                   />
                   <Form.Check
-                    onClick={ (e) => setRole(Number(e.currentTarget.value))}
+                    onClick={ (e: MouseEvent<HTMLInputElement>) => setRole(Number(e.currentTarget.value))}
                     type="radio"
                     label="Financial Planner"
                     name="role"
