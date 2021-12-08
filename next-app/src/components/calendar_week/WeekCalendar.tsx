@@ -8,6 +8,7 @@ import {
   setEditFlagContext, 
   setPostReceptionsContext,
   DetailReceptionsContext,
+  ModeContext,
 } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 
@@ -57,6 +58,7 @@ const CalDetailTop: FC = () => {
 
 const CalDetail: FC = () => {
   const receptions = useContext(DetailReceptionsContext)
+  const mode = useContext(ModeContext)
   const formatDate = (start: string, end: string) => {
     const startDate = new Date(start)
     const endDate = new Date(end)
@@ -72,6 +74,9 @@ const CalDetail: FC = () => {
   const cancelReception = () => {
     //cancel Reception
   }
+  const reserveReception = () => {
+    // reserve Reception
+  }
   return(
     <div className="mt-4 d-flex justify-content-center">
       {receptions && //receptions情報がある時のみ
@@ -86,10 +91,16 @@ const CalDetail: FC = () => {
                     <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
                   </>
                 }
-                { !reception.reserved && //予約受付中
+                { !reception.reserved && mode===0 && //予約受付中
                   <>
                     <Card.Text> 予約受付中 </Card.Text>
                     <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
+                  </>
+                }
+                { !reception.reserved && mode===1 && //予約受付中
+                  <>
+                    <Card.Text> 予約受付中 </Card.Text>
+                    <Button variant="outline-success" onClick={ reserveReception }>予約する</Button>
                   </>
                 }
             </Card.Body>

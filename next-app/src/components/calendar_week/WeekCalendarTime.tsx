@@ -82,7 +82,7 @@ const EditCalTime: FC<EditCalTime> = ( props ) =>{
 export const CalTimeUserReception: FC<CalTimeProps> = ( props ) => {
   const setDetailReceptions = useContext (setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.filter(r => r.start===props.dt_ISO)
+  const reception = receptions.filter(r => r.start===props.dt_ISO && !r.reserved)
   if (reception.length===0){
     return(
       <div className={ styles.cal_time }>

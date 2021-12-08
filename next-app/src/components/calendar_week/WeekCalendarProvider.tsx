@@ -28,7 +28,7 @@ export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( props ) => 
   const [EditFlag, setEditFlag] = useState<boolean>(false)
   const [postReceptions, setPostReceptions] = useState<string[]>([])
   const [DetailReceptions, setDetailReceptions] = useState<ReceptionData[] | null>(null)
-  const [mode , setMode] = useState<number>(0)
+  const [mode , setMode] = useState<number>(1)
   return(
     <ReceptionContext.Provider value={ props.receptions } >
       <EditFlagContext.Provider value={EditFlag} >
