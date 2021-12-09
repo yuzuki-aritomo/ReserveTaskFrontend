@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3001/'
+import { baseUrl } from 'src/api/ApiConfig'
 
 export interface SignInReqData {
   email: string;
@@ -39,6 +39,7 @@ export const SignInApi= async (signInReqData: SignInReqData)=> {
     localStorage.setItem("uid", response.headers.get("uid") ?? "")
     localStorage.setItem("access-token", response.headers.get("access-token") ?? "")
     localStorage.setItem("client", response.headers.get("client") ?? "")
+
     return response.json()
   })
   .then(data=>{
