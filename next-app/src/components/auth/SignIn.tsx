@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, ChangeEvent, useState } from "react"
 import { SignInApi, SignInReqData, SignInResData } from 'src/api/auth/SignInApi'
 import { useRouter } from 'next/router'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
@@ -39,10 +39,10 @@ const SignIn: FC<SignInProps> = ({ toPath }) => {
           <Card.Body>
             <Form onSubmit={SignInSubmit}>
               <FloatingLabel controlId="email" label="Email address" className="mb-3">
-                <Form.Control required type="email" placeholder="Email@example.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <Form.Control required type="email" placeholder="Email@example.com" value={email} onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}/>
               </FloatingLabel>
               <FloatingLabel controlId="password" label="Password" className="mb-3">
-                <Form.Control required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <Form.Control required type="password" placeholder="Password" value={password} onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/>
               </FloatingLabel>
               <Button className="mt-2" variant="primary" type="submit">
                 Sign In
