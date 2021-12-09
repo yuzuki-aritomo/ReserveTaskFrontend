@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import { SignOutApi } from 'Api/Auth/SignOutApi'
+import { SignOutApi } from 'src/api/auth/SignOutApi'
 import { Row, Col, Card, Form, Button } from "react-bootstrap"
 
 const HomePage: NextPage = () => {
@@ -13,6 +13,7 @@ const HomePage: NextPage = () => {
       console.error(e)
     }
   }
+
   return(
     <div>
       <Link href="/">Top</Link>

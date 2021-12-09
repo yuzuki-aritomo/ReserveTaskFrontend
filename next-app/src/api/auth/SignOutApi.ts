@@ -1,4 +1,5 @@
-const baseUrl = 'http://localhost:3001/'
+import { baseUrl } from 'src/api/ApiConfig'
+
 export interface SignOutResData {
   success: string
 }
@@ -26,6 +27,7 @@ export const SignOutApi= async ()=> {
     localStorage.removeItem("client")
     localStorage.removeItem("name")
     localStorage.removeItem("role")
+
     return response.json()
   })
   .then(data => {
