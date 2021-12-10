@@ -38,7 +38,7 @@ export const SignUpApi = async (ReqData: SignUpReqData) => {
       localStorage.setItem('uid', response.headers.get('uid') ?? '')
       localStorage.setItem('access-token', response.headers.get('access-token') ?? '')
       localStorage.setItem('client', response.headers.get('client') ?? '')
-
+      
       return response.json()
     })
     .then((data) => {
