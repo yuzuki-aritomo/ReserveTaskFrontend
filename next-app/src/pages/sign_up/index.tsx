@@ -3,12 +3,11 @@ import Link from 'next/link'
 import SignUp from 'src/components/auth/SignUp'
 
 const SignUpPage: NextPage = () => {
-  const toPath = "/home"
-  return(
+  return (
     <div>
-      <Link href="/">Top</Link>
+      <Link href='/'>Top</Link>
       <h1>sign up</h1>
-      <SignUp toPath={toPath} />
+      <SignUp />
     </div>
   )
 }
