@@ -24,6 +24,7 @@ export const UserProvider: FC = ( { children } ) => {
     }
     SetUserData()
   }, [])
+  
   return(
     <UserContext.Provider value={ user }>
       <setUserContext.Provider value={ setUser }>

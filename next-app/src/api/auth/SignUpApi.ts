@@ -38,12 +38,14 @@ export const SignUpApi = async (ReqData: SignUpReqData) => {
       localStorage.setItem('uid', response.headers.get('uid') ?? '')
       localStorage.setItem('access-token', response.headers.get('access-token') ?? '')
       localStorage.setItem('client', response.headers.get('client') ?? '')
+
       return response.json()
     })
     .then((data) => {
       const res: SignUpResData = data as SignUpResData
       localStorage.setItem('name', res.data.name)
       localStorage.setItem('role', res.data.role.toString())
+      
       return res
     })
     .catch((error) => {
