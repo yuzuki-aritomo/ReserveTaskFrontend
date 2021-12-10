@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-import { FC, useState, useContext } from "react"
-import { SignUpApi, SignUpReqData, SignUpResData } from 'Api/Auth/SignUpApi'
-import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
-=======
 import { FC, useState, MouseEvent, FormEvent, ChangeEvent } from 'react'
 import { SignUpApi, SignUpReqData, SignUpResData } from 'src/api/auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from 'react-bootstrap'
->>>>>>> master
 import { useRouter } from 'next/router'
-import { setUserContext  } from 'src/Provider/UserProvider'
+import { setUserContext  } from 'src/provider/UserProvider'
 
 const SignUp: FC = () => {
   const router = useRouter()
@@ -16,15 +10,8 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [role, setRole] = useState<number>(-1)
-<<<<<<< HEAD
-  const setUser = useContext(setUserContext)
-
-  const SignUpSubmit = async (event: any) => {
-    event.preventDefault();
-=======
   const SignUpSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
->>>>>>> master
     const ReqData: SignUpReqData = {
       name: name,
       email: email,
@@ -34,21 +21,9 @@ const SignUp: FC = () => {
     try {
       const signUpResData: SignUpResData = await SignUpApi(ReqData)
       //User情報を保存して/homeにリダイレクト
-<<<<<<< HEAD
-      setUser({
-        name: signUpResData.data.name,
-        role: signUpResData.data.role,
-        email: signUpResData.data.email
-      })
-      const path = props.toPath ?? "/"
-      router.push(path)
-      console.log("SignUpApi",signUpResData)
-    }catch(e){
-=======
       router.push('/home')
       console.log('SignUpApi', signUpResData)
     } catch (e) {
->>>>>>> master
       console.error(e)
     }
   }
