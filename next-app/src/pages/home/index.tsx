@@ -6,8 +6,6 @@ const HomePage: NextPage = () => {
 
   return(
     <div>
-      <Link href="/">Top</Link>
-      <h1>sign out</h1>
       <SignOut />
     </div>
   )
