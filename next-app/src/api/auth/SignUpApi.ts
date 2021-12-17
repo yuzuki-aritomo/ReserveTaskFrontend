@@ -45,7 +45,7 @@ export const SignUpApi = async (ReqData: SignUpReqData) => {
       const res: SignUpResData = data as SignUpResData
       localStorage.setItem('name', res.data.name)
       localStorage.setItem('role', res.data.role.toString())
-
+      
       return res
     })
     .catch((error) => {
