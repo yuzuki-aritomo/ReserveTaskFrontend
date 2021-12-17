@@ -1,7 +1,7 @@
 import 'styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import type { AppProps } from 'next/app'
-import { UserProvider } from 'src/Provider/UserProvider'
+import { UserProvider } from 'src/provider/UserProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
