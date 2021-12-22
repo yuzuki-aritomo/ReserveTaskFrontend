@@ -11,18 +11,18 @@ const ReceptionsPage: NextPage = () => {
     const fetchReceptionsData = async () =>{
       const getReceptionsApiResData: GetReceptionsApiResData = await GetReceptionsApi()
       const formatToISO = (d: string) => new Date(d).toISOString()
-      if(getReceptionsApiResData.res?.data){
-        for(let i=0; i<getReceptionsApiResData.res.data.length;i++){
-          getReceptionsApiResData.res.data[i].start = formatToISO(getReceptionsApiResData.res.data[i].start)
-          getReceptionsApiResData.res.data[i].end = formatToISO(getReceptionsApiResData.res.data[i].end)
+      if(getReceptionsApiResData.res?.reception_dates){
+        for(let i=0; i<getReceptionsApiResData.res.reception_dates.length;i++){
+          getReceptionsApiResData.res.reception_dates[i].start = formatToISO(getReceptionsApiResData.res.reception_dates[i].start)
+          getReceptionsApiResData.res.reception_dates[i].end = formatToISO(getReceptionsApiResData.res.reception_dates[i].end)
         }
-        setReception(getReceptionsApiResData.res?.data)
+        setReception(getReceptionsApiResData.res?.reception_dates)
       }
     }
     fetchReceptionsData()
   }, [])
-  
-return(
+
+  return(
     <div>
       <WeekCalendar receptions={ reception } />
     </div>

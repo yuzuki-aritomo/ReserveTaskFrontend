@@ -6,7 +6,7 @@ export interface GetReceptionsReqData {
 }
 
 export interface GetReceptionsResData {
-  data: ReceptionData[],
+  reception_dates: ReceptionData[],
 }
 export interface GetReceptionsApiResData {
   ok: boolean;
