@@ -9,6 +9,7 @@ const ReceptionsPage: NextPage = () => {
   useEffect(() => {
     const fetchReceptionsData = async () =>{
       const formatToISO = (d: string) => new Date(d).toISOString()
+      // dummy data
       const fetch_data = [
         {reception_id: 1, user_name: 'user_1', start: '2021-12-31T03:00:00.000Z', end: '2021-12-31T03:30:00.000Z', reserved: true},
         {reception_id: 3, user_name: 'user_2', start: '2021-12-31T04:00:00.000Z', end: '2021-12-31T04:30:00.000Z', reserved: true},
