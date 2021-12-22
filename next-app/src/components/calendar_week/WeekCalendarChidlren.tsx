@@ -29,7 +29,8 @@ const CalTime: FC<CalTimeProps> = (props) => {
   }else if (mode == 2){// User 予約完了した一覧を確認
     return <CalTimeUserReservation dt_ISO={dt_ISO}/>
   }
-  return <></>
+  
+return <></>
 }
 
 //日単位
@@ -52,7 +53,8 @@ const CalDay: FC<CalDayProps> = ( props ) => {
   const m = dt.getMonth()+1
   const d = dt.getDate()
   const format_day: string = m+"/"+d
-  return(
+  
+return(
     <div>
       { props.titleFlag && 
         <div className={ styles.cal_time }></div>

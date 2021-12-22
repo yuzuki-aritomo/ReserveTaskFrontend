@@ -21,7 +21,8 @@ const ReceptionsPage: NextPage = () => {
       console.log("SignInError:", postReceptionsApiResData.errorText)
     }
   }
-  return(
+  
+return(
     <div>
       <Link href="/">Top</Link>
       <h1>Receptions</h1>

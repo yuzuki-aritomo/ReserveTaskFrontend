@@ -21,7 +21,8 @@ const ReceptionsPage: NextPage = () => {
     }
     fetchReceptionsData()
   }, [])
-  return(
+  
+return(
     <div>
       <WeekCalendar receptions={ reception } />
     </div>

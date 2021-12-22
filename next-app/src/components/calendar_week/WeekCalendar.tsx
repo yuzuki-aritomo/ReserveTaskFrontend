@@ -19,16 +19,17 @@ type WeekCalendarProps = {
 const WeekCalendar: FC<WeekCalendarProps> = (props) => {
   //今日を含む直近の一週間の日付をweekDaysに保存
   const today = new Date()
-  var weekDays: string[] = Array(7)
-  var dt = new Date(today.getFullYear(), today.getMonth())
+  let weekDays: string[] = Array(7)
+  let dt = new Date(today.getFullYear(), today.getMonth())
   dt.setDate(today.getDate() - today.getDay()-1);
-  for(var i=0; i<7;i++){
+  for(let i=0; i<7;i++){
     dt.setDate(dt.getDate() + 1);
     weekDays[i] = dt.toISOString();
   }
   //日付初期化
   const [week, setWeek] = useState<string[]>(weekDays)
-  return(
+  
+return(
     <div>
       <WeekCalendarProvider receptions={ props.receptions } >
         <div className={ styles.hole_cal }>
@@ -66,7 +67,8 @@ const CalDetail: FC = () => {
     const startTime = startDate.getHours()+":"+startDate.getMinutes().toString().padStart(2, '0')
     const endTime = endDate.getHours()+":"+endDate.getMinutes().toString().padStart(2, '0')
     const res = dt + "  " + startTime + "~" + endTime
-    return res
+    
+return res
   }
   const deleteReception = () => {
     //delete Reception
@@ -77,7 +79,8 @@ const CalDetail: FC = () => {
   const reserveReception = () => {
     // reserve Reception
   }
-  return(
+  
+return(
     <div className="mt-4 d-flex justify-content-center">
       {receptions && //receptions情報がある時のみ
         receptions.map((reception, index) =>
@@ -127,14 +130,15 @@ const CalWeekTop:FC<CalWeekTopProps> = ( props ) => {
     const dt = new Date(props.week[0])
     const diffDays = next_flag ? 6 : -8
     dt.setDate(dt.getDate() + diffDays)
-    var Week: string[] = Array(7)
-    for(var i=0; i<7;i++){
+    let Week: string[] = Array(7)
+    for(let i=0; i<7;i++){
       dt.setDate(dt.getDate()+1)
       Week[i] = dt.toISOString()
     }
     props.setWeek(Week)
   }
-  return(
+  
+return(
     <div className="d-flex justify-content-between mt-4" >
       <Button variant="outline-primary" onClick={ toPrevWeek } >Previous Week</Button>
       <p className={styles.week_calendar_title}> WEEK CALENDAR </p>
@@ -156,7 +160,8 @@ const CalWeekBottom: FC = () => {
   const RegisterReceptions = () =>{
     //post receptions
   }
-  return(
+  
+return(
     <div className="d-flex justify-content-end mt-4">
       { !EditFlag &&
         <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
