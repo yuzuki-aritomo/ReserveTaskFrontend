@@ -1,4 +1,4 @@
-import { FC, createContext, useState, ReactNode, Dispatch, SetStateAction } from "react"
+import { FC, useEffect, createContext, useState, ReactNode, Dispatch, SetStateAction } from "react"
 import { ReceptionData } from 'src/components/models/ReceptionModel'
 
 export const ReceptionContext = createContext<ReceptionData[]>([])
@@ -14,7 +14,7 @@ export const DetailReceptionsContext = createContext<ReceptionData[] | null>(nul
 export const setDetailReceptionsContext = createContext<Dispatch<SetStateAction<ReceptionData[] | null>>>(
   ()=> undefined
 )
-export const ModeContext = createContext<number>(0)
+export const ModeContext = createContext<number>(-1)
 export const setModeContext = createContext<Dispatch<SetStateAction<number>>>(
   ()=> undefined
 )
@@ -22,13 +22,14 @@ export const setModeContext = createContext<Dispatch<SetStateAction<number>>>(
 type WeekCalendarProviderProps = {
   children: ReactNode,
   receptions: ReceptionData[]
+  mode: number
 }
-
+// modeをpropsで渡して出しわけ
 export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( props ) => {
   const [EditFlag, setEditFlag] = useState<boolean>(false)
   const [postReceptions, setPostReceptions] = useState<string[]>([])
   const [DetailReceptions, setDetailReceptions] = useState<ReceptionData[] | null>(null)
-  const [mode , setMode] = useState<number>(1)
+  const [mode , setMode] = useState<number>(props.mode)
   
 return(
     <ReceptionContext.Provider value={ props.receptions } >

@@ -14,9 +14,10 @@ import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 
 //カレンダー本体
 type WeekCalendarProps = {
-  receptions: ReceptionData[]
+  receptions: ReceptionData[],
+  mode: number
 }
-const WeekCalendar: FC<WeekCalendarProps> = (props) => {
+const WeekCalendar: FC<WeekCalendarProps> = ({receptions, mode}) => {
   //今日を含む直近の一週間の日付をweekDaysに保存
   const today = new Date()
   let weekDays: string[] = Array(7)
@@ -28,15 +29,17 @@ const WeekCalendar: FC<WeekCalendarProps> = (props) => {
   }
   //日付初期化
   const [week, setWeek] = useState<string[]>(weekDays)
-  
+
 return(
     <div>
-      <WeekCalendarProvider receptions={ props.receptions } >
+      <WeekCalendarProvider receptions={ receptions } mode={ mode } >
         <div className={ styles.hole_cal }>
           <div className={styles.cal}>
             <CalWeekTop week={ week } setWeek={ setWeek } />
             <CalWeek weekDays={ week } />
-            <CalWeekBottom />
+            {mode==0&& //FPの時のみ
+              <CalWeekBottom />
+            }
           </div>
           <div className={ styles.detail }>
             <CalDetailTop />
@@ -57,6 +60,7 @@ const CalDetailTop: FC = () => {
   )
 }
 
+// Calendar詳細 右上に表示される
 const CalDetail: FC = () => {
   const receptions = useContext(DetailReceptionsContext)
   const mode = useContext(ModeContext)
@@ -68,16 +72,16 @@ const CalDetail: FC = () => {
     const endTime = endDate.getHours()+":"+endDate.getMinutes().toString().padStart(2, '0')
     const res = dt + "  " + startTime + "~" + endTime
     
-return res
+  return res
   }
   const deleteReception = () => {
-    //delete Reception
+    //delete Reception api
   }
   const cancelReception = () => {
-    //cancel Reception
+    //cancel Reception api
   }
   const reserveReception = () => {
-    // reserve Reception
+    // reserve Reception api
   }
   
 return(
@@ -88,7 +92,7 @@ return(
             <Card.Header as="h5">予約情報詳細</Card.Header>
             <Card.Body>
               <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
-                {reception.reserved && //予約完了
+                {reception.reserved && //予約完了している場合
                   <>
                     <Card.Text>User: {reception.user_name } </Card.Text>
                     <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
@@ -138,7 +142,7 @@ const CalWeekTop:FC<CalWeekTopProps> = ( props ) => {
     props.setWeek(Week)
   }
   
-return(
+  return(
     <div className="d-flex justify-content-between mt-4" >
       <Button variant="outline-primary" onClick={ toPrevWeek } >Previous Week</Button>
       <p className={styles.week_calendar_title}> WEEK CALENDAR </p>
@@ -160,8 +164,8 @@ const CalWeekBottom: FC = () => {
   const RegisterReceptions = () =>{
     //post receptions
   }
-  
-return(
+
+  return(
     <div className="d-flex justify-content-end mt-4">
       { !EditFlag &&
         <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>

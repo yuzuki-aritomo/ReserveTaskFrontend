@@ -24,9 +24,9 @@ const CalTime: FC<CalTimeProps> = (props) => {
   }
   if(mode == 0){ // FP が予約確認と登録
     return <CalTimeFpReception dt_ISO={dt_ISO} />
-  }else if(mode == 1){// User 予約可能日時を確認
+  }else if(mode == 1){// Customer 予約可能日時を確認
     return <CalTimeUserReception dt_ISO={dt_ISO}/>
-  }else if (mode == 2){// User 予約完了した一覧を確認
+  }else if (mode == 2){// Customer 予約完了した一覧を確認
     return <CalTimeUserReservation dt_ISO={dt_ISO}/>
   }
   

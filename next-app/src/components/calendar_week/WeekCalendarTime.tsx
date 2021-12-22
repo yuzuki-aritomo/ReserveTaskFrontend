@@ -79,7 +79,7 @@ const EditCalTime: FC<EditCalTime> = ( props ) =>{
   }
 }
 
-// User 予約可能日時を確認
+// Customer 予約可能日時を確認
 export const CalTimeUserReception: FC<CalTimeProps> = ( props ) => {
   const setDetailReceptions = useContext (setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
@@ -98,7 +98,7 @@ export const CalTimeUserReception: FC<CalTimeProps> = ( props ) => {
   }
 }
 
-// User 予約完了した一覧を確認
+// Customer 予約完了した一覧を確認
 export const CalTimeUserReservation: FC<CalTimeProps> = ( props ) => {
   const setDetailReceptions = useContext(setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)

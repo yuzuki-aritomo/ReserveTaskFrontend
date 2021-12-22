@@ -26,7 +26,7 @@ const ReceptionsPage: NextPage = () => {
 
   return(
     <div>
-      <WeekCalendar receptions={ reception } />
+      <WeekCalendar receptions={ reception } mode={ 0 }  />
     </div>
   )
 }
