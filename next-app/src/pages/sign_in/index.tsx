@@ -7,8 +7,6 @@ const SignInPage: NextPage = () => {
   
   return(
     <div>
-      <Link href="/">Top</Link>
-      <h1>sign In</h1>
       <SignIn toPath={toPath} />
     </div>
   )

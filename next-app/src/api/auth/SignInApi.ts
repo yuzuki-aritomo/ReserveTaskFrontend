@@ -43,7 +43,12 @@ export const SignInApi= async (signInReqData: SignInReqData)=> {
     return response.json()
   })
   .then(data=>{
-    return data as SignInResData
+    const res = data as SignInResData
+    localStorage.setItem('email', res.data.email)
+    localStorage.setItem('name', res.data.name)
+    localStorage.setItem('role', res.data.role.toString())
+
+    return res
   })
   .catch(error=> {
     throw new Error("エラー発生");
