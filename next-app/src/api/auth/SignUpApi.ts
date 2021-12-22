@@ -43,6 +43,7 @@ export const SignUpApi = async (ReqData: SignUpReqData) => {
     })
     .then((data) => {
       const res: SignUpResData = data as SignUpResData
+    localStorage.setItem('email', res.data.email)
       localStorage.setItem('name', res.data.name)
       localStorage.setItem('role', res.data.role.toString())
       
