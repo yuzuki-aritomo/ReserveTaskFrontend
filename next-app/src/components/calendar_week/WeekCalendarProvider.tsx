@@ -22,17 +22,17 @@ export const setModeContext = createContext<Dispatch<SetStateAction<number>>>(
 type WeekCalendarProviderProps = {
   children: ReactNode,
   receptions: ReceptionData[]
-  mode: number
+  cal_mode: number
 }
 // modeをpropsで渡して出しわけ
-export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( props ) => {
+export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( { children, receptions, cal_mode} ) => {
   const [EditFlag, setEditFlag] = useState<boolean>(false)
   const [postReceptions, setPostReceptions] = useState<string[]>([])
   const [DetailReceptions, setDetailReceptions] = useState<ReceptionData[] | null>(null)
-  const [mode , setMode] = useState<number>(props.mode)
+  const [mode , setMode] = useState<number>(cal_mode)
   
 return(
-    <ReceptionContext.Provider value={ props.receptions } >
+    <ReceptionContext.Provider value={ receptions } >
       <EditFlagContext.Provider value={EditFlag} >
         <setEditFlagContext.Provider value={setEditFlag}>
           <PostReceptionsContext.Provider value={ postReceptions }>
@@ -41,7 +41,7 @@ return(
                 <setDetailReceptionsContext.Provider value={setDetailReceptions}>
                   <ModeContext.Provider value={mode}>
                     <setModeContext.Provider value={setMode}>
-                      { props.children }
+                      { children }
                     </setModeContext.Provider>
                   </ModeContext.Provider>
                 </setDetailReceptionsContext.Provider>

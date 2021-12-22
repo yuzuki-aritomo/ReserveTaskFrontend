@@ -9,17 +9,17 @@ type CalTimeProps = {
   dt_ISO: string
 }
 // FP が予約確認と登録
-export const CalTimeFpReception: FC<CalTimeProps> = ( props ) => {
+export const CalTimeFpReception: FC<CalTimeProps> = ( { dt_ISO } ) => {
   const setDetailReceptions = useContext (setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.filter(r => r.start===props.dt_ISO)
+  const reception = receptions.filter(r => r.start===dt_ISO)
   const EditFlag = useContext(EditFlagContext)
   if(EditFlag){
     if(reception.length === 0 ){
-      return <EditCalTime reception={ undefined } dt={props.dt_ISO} />
+      return <EditCalTime reception={ undefined } dt={dt_ISO} />
     }
     
-return <EditCalTime reception={ reception[0] } dt={props.dt_ISO} />
+return <EditCalTime reception={ reception[0] } dt={dt_ISO} />
   }
   if (reception.length === 0){
     return(
@@ -45,26 +45,26 @@ type EditCalTime = {
   reception:  ReceptionData | undefined;
   dt: string;
 }
-const EditCalTime: FC<EditCalTime> = ( props ) =>{
+const EditCalTime: FC<EditCalTime> = ( {reception, dt} ) =>{
   const postReceptions = useContext(PostReceptionsContext)
   const setPostReceptions = useContext(setPostReceptionsContext)
   const handlePostReceptions = () => {
-    if( postReceptions.includes(props.dt) ){
-      const newPostReceptions = postReceptions.filter(r => r!==props.dt)
+    if( postReceptions.includes(dt) ){
+      const newPostReceptions = postReceptions.filter(r => r!==dt)
       setPostReceptions(newPostReceptions)
     }else{
-      setPostReceptions([ ...postReceptions, props.dt ])
+      setPostReceptions([ ...postReceptions, dt ])
     }
   }
-  if (!props.reception){
+  if (!reception){
     return(
       <div className={ styles.cal_time } onClick={ handlePostReceptions }>
-        {postReceptions.includes(props.dt) &&
+        {postReceptions.includes(dt) &&
           '○'
         }
       </div>
     )
-  }else if (props.reception.reserved){
+  }else if (reception.reserved){
     return(
       <div className={ styles.cal_time }>
         予約完了
@@ -80,10 +80,10 @@ const EditCalTime: FC<EditCalTime> = ( props ) =>{
 }
 
 // Customer 予約可能日時を確認
-export const CalTimeUserReception: FC<CalTimeProps> = ( props ) => {
+export const CalTimeUserReception: FC<CalTimeProps> = ( {dt_ISO} ) => {
   const setDetailReceptions = useContext (setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.filter(r => r.start===props.dt_ISO && !r.reserved)
+  const reception = receptions.filter(r => r.start===dt_ISO && !r.reserved)
   if (reception.length===0){
     return(
       <div className={ styles.cal_time }>
@@ -99,10 +99,10 @@ export const CalTimeUserReception: FC<CalTimeProps> = ( props ) => {
 }
 
 // Customer 予約完了した一覧を確認
-export const CalTimeUserReservation: FC<CalTimeProps> = ( props ) => {
+export const CalTimeUserReservation: FC<CalTimeProps> = ( {dt_ISO} ) => {
   const setDetailReceptions = useContext(setDetailReceptionsContext)
   const receptions = useContext(ReceptionContext)
-  const reception = receptions.filter(r => r.start===props.dt_ISO)
+  const reception = receptions.filter(r => r.start===dt_ISO)
   if (reception.length===0){
     return(
       <div className={ styles.cal_time }>

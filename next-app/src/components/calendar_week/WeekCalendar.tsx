@@ -32,7 +32,7 @@ const WeekCalendar: FC<WeekCalendarProps> = ({receptions, mode}) => {
 
 return(
     <div>
-      <WeekCalendarProvider receptions={ receptions } mode={ mode } >
+      <WeekCalendarProvider receptions={ receptions } cal_mode={ mode } >
         <div className={ styles.hole_cal }>
           <div className={styles.cal}>
             <CalWeekTop week={ week } setWeek={ setWeek } />
@@ -123,7 +123,7 @@ type CalWeekTopProps = {
   week: string[],
   setWeek: Dispatch<SetStateAction<string[]>>
 }
-const CalWeekTop:FC<CalWeekTopProps> = ( props ) => {
+const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
   const toNextWeek = () => {
     changeWeek(true)
   }
@@ -131,7 +131,7 @@ const CalWeekTop:FC<CalWeekTopProps> = ( props ) => {
     changeWeek(false)
   }
   const changeWeek = (next_flag : boolean) => {
-    const dt = new Date(props.week[0])
+    const dt = new Date(week[0])
     const diffDays = next_flag ? 6 : -8
     dt.setDate(dt.getDate() + diffDays)
     let Week: string[] = Array(7)
@@ -139,7 +139,7 @@ const CalWeekTop:FC<CalWeekTopProps> = ( props ) => {
       dt.setDate(dt.getDate()+1)
       Week[i] = dt.toISOString()
     }
-    props.setWeek(Week)
+    setWeek(Week)
   }
   
   return(
