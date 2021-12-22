@@ -1,5 +1,5 @@
 import { FC, createContext, useState, ReactNode, Dispatch, SetStateAction } from "react"
-import { ReceptionData } from 'Models/ReceptionModel'
+import { ReceptionData } from 'src/components/models/ReceptionModel'
 
 export const ReceptionContext = createContext<ReceptionData[]>([])
 export const EditFlagContext = createContext<boolean>(false)

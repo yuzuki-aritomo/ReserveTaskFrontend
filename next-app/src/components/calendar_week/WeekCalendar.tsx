@@ -1,6 +1,6 @@
 import { FC, useState, useContext, Dispatch, SetStateAction} from 'react'
 import styles from "styles/calWeek.module.css"
-import { ReceptionData } from 'Models/ReceptionModel'
+import { ReceptionData } from 'src/components/models/ReceptionModel'
 import { Button, Card } from "react-bootstrap"
 import { 
   WeekCalendarProvider, 

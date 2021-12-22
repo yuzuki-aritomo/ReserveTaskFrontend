@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react'
 import styles from "styles/calWeek.module.css"
-import { ReceptionData } from 'Models/ReceptionModel'
+import { ReceptionData } from 'src/components/models/ReceptionModel'
 import { 
   ReceptionContext, EditFlagContext, PostReceptionsContext, setPostReceptionsContext, setDetailReceptionsContext
 } from 'src/components/calendar_week/WeekCalendarProvider'
