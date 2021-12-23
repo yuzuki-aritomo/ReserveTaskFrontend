@@ -19,7 +19,7 @@ export const CalTimeFpReception: FC<CalTimeProps> = ( { dt_ISO } ) => {
       return <EditCalTime reception={ undefined } dt={dt_ISO} />
     }
     
-return <EditCalTime reception={ reception[0] } dt={dt_ISO} />
+  return <EditCalTime reception={ reception[0] } dt={dt_ISO} />
   }
   if (reception.length === 0){
     return(
