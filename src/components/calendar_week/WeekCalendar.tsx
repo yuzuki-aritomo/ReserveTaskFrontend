@@ -88,13 +88,13 @@ const CalDetail: FC = () => {
               <Card.Header as="h5">予約情報詳細</Card.Header>
               <Card.Body>
                 <Card.Title>{ formatDate(schedule.start, schedule.end) }</Card.Title>
-                  {schedule.reserved && //予約完了している場合 FP
+                  {schedule.reserved && mode == 0 &&//予約完了している場合 FP
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
                       <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
                     </>
                   }
-                  {schedule.reserved && //予約完了している場合 Customer
+                  {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
                       <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
