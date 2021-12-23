@@ -42,7 +42,6 @@ return(
             }
           </div>
           <div className={ styles.detail }>
-            <CalDetailTop />
             <CalDetail />
           </div>
         </div>
@@ -51,14 +50,6 @@ return(
   )
 }
 export default WeekCalendar
-
-const CalDetailTop: FC = () => {
-  return(
-    <div className="d-flex justify-content-center mt-4" >
-      <p className={styles.week_calendar_title}> Receptions Detail </p>
-    </div>
-  )
-}
 
 // Calendar詳細 右上に表示される
 const CalDetail: FC = () => {
@@ -72,7 +63,7 @@ const CalDetail: FC = () => {
     const endTime = endDate.getHours()+":"+endDate.getMinutes().toString().padStart(2, '0')
     const res = dt + "  " + startTime + "~" + endTime
     
-  return res
+    return res
   }
   const deleteReception = () => {
     //delete Reception api
@@ -84,37 +75,42 @@ const CalDetail: FC = () => {
     // reserve Reception api
   }
   
-return(
-    <div className="mt-4 d-flex justify-content-center">
-      {receptions && //receptions情報がある時のみ
-        receptions.map((reception, index) =>
-          <Card className="w-75" key={index}>
-            <Card.Header as="h5">予約情報詳細</Card.Header>
-            <Card.Body>
-              <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
-                {reception.reserved && //予約完了している場合
-                  <>
-                    <Card.Text>User: {reception.user_name } </Card.Text>
-                    <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
-                  </>
-                }
-                { !reception.reserved && mode===0 && //予約受付中
-                  <>
-                    <Card.Text> 予約受付中 </Card.Text>
-                    <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
-                  </>
-                }
-                { !reception.reserved && mode===1 && //予約受付中
-                  <>
-                    <Card.Text> 予約受付中 </Card.Text>
-                    <Button variant="outline-success" onClick={ reserveReception }>予約する</Button>
-                  </>
-                }
-            </Card.Body>
-          </Card>
-        )
-      }
-    </div>
+  return(
+    <>
+      <div className="d-flex justify-content-center mt-4" >
+        <p className={styles.week_calendar_title}> Receptions Detail </p>
+      </div>
+      <div className="mt-4 d-flex justify-content-center">
+        {receptions && //receptions情報がある時のみ
+          receptions.map((reception, index) =>
+            <Card className="w-75" key={index}>
+              <Card.Header as="h5">予約情報詳細</Card.Header>
+              <Card.Body>
+                <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
+                  {reception.reserved && //予約完了している場合
+                    <>
+                      <Card.Text>User: {reception.user_name } </Card.Text>
+                      <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
+                    </>
+                  }
+                  { !reception.reserved && mode===0 && //予約受付中
+                    <>
+                      <Card.Text> 予約受付中 </Card.Text>
+                      <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
+                    </>
+                  }
+                  { !reception.reserved && mode===1 && //予約受付中
+                    <>
+                      <Card.Text> 予約受付中 </Card.Text>
+                      <Button variant="outline-success" onClick={ reserveReception }>予約する</Button>
+                    </>
+                  }
+              </Card.Body>
+            </Card>
+          )
+        }
+      </div>
+    </>
   )
 }
 
