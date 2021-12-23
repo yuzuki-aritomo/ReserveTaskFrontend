@@ -1,9 +1,5 @@
 import { baseUrl } from 'src/api/ApiConfig'
 
-export interface SignOutResData {
-  success: string
-}
-
 export const SignOutApi= async ()=> {
   await fetch(baseUrl+'auth/sign_out/', {
     method: 'POST',
@@ -29,9 +25,6 @@ export const SignOutApi= async ()=> {
     localStorage.removeItem("role")
 
     return response.json()
-  })
-  .then(data => {
-    return data as SignOutResData
   })
   .catch(e=>{
     throw new Error("エラーが発生しました。")
