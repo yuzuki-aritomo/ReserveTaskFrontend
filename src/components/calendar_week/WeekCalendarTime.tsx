@@ -1,8 +1,7 @@
 import { FC, useContext } from 'react'
 import styles from "styles/calWeek.module.css"
-import { ReceptionData } from 'src/components/models/ReceptionModel'
 import { 
-  ScheduleContext, EditFlagContext, PostReceptionsContext, setPostReceptionsContext, setDetailSchedulesContext
+  ScheduleContext, EditFlagContext, PostReceptionsContext, setPostReceptionsContext, setDetailSchedulesContext, ScheduleData
 } from 'src/components/calendar_week/WeekCalendarProvider'
 
 type CalTimeProps = {
@@ -16,10 +15,10 @@ export const CalTimeFpReception: FC<CalTimeProps> = ( { dt_ISO } ) => {
   const EditFlag = useContext(EditFlagContext)
   if(EditFlag){
     if(schedule.length === 0 ){
-      return <EditCalTime reception={ undefined } dt={dt_ISO} />
+      return <EditCalTime schedule={ undefined } dt={dt_ISO} />
     }
     
-  return <EditCalTime reception={ schedule[0] } dt={dt_ISO} />
+  return <EditCalTime schedule={ schedule[0] } dt={dt_ISO} />
   }
   if (schedule.length === 0){
     return(
@@ -42,10 +41,10 @@ export const CalTimeFpReception: FC<CalTimeProps> = ( { dt_ISO } ) => {
 }
 //受付時間編集中
 type EditCalTime = {
-  reception:  ReceptionData | undefined;
+  schedule: ScheduleData | undefined;
   dt: string;
 }
-const EditCalTime: FC<EditCalTime> = ( {reception, dt} ) =>{
+const EditCalTime: FC<EditCalTime> = ( {schedule, dt} ) =>{
   const postReceptions = useContext(PostReceptionsContext)
   const setPostReceptions = useContext(setPostReceptionsContext)
   const handlePostReceptions = () => {
@@ -56,7 +55,7 @@ const EditCalTime: FC<EditCalTime> = ( {reception, dt} ) =>{
       setPostReceptions([ ...postReceptions, dt ])
     }
   }
-  if (!reception){
+  if (!schedule){
     return(
       <div className={ styles.cal_time } onClick={ handlePostReceptions }>
         {postReceptions.includes(dt) &&
@@ -64,7 +63,7 @@ const EditCalTime: FC<EditCalTime> = ( {reception, dt} ) =>{
         }
       </div>
     )
-  }else if (reception.reserved){
+  }else if (schedule.reserved){
     return(
       <div className={ styles.cal_time }>
         予約完了

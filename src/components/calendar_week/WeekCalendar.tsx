@@ -9,12 +9,13 @@ import {
   setPostReceptionsContext,
   DetailSchedulesContext,
   ModeContext,
+  ScheduleData,
 } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 
 //カレンダー本体
 type WeekCalendarProps = {
-  schedules: ReceptionData[],
+  schedules: ScheduleData[],
   mode: number
 }
 const WeekCalendar: FC<WeekCalendarProps> = ({schedules, mode}) => {
@@ -89,13 +90,13 @@ const CalDetail: FC = () => {
                 <Card.Title>{ formatDate(schedule.start, schedule.end) }</Card.Title>
                   {schedule.reserved && //予約完了している場合 FP
                     <>
-                      <Card.Text>User: {schedule.customer_name } </Card.Text>
+                      <Card.Text>User: {schedule.name } </Card.Text>
                       <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
                     </>
                   }
                   {schedule.reserved && //予約完了している場合 Customer
                     <>
-                      <Card.Text>User: {schedule.customer_name } </Card.Text>
+                      <Card.Text>User: {schedule.name } </Card.Text>
                       <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
                     </>
                   }

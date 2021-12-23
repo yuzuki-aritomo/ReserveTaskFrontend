@@ -1,7 +1,15 @@
 import { FC, useEffect, createContext, useState, ReactNode, Dispatch, SetStateAction } from "react"
 import { ReceptionData } from 'src/components/models/ReceptionModel'
 
-export const ScheduleContext = createContext<ReceptionData[]>([])
+export interface ScheduleData {
+  id: number;
+  start: string;
+  end: string;
+  name: string;
+  reserved: boolean;
+}
+
+export const ScheduleContext = createContext<ScheduleData[]>([])
 export const EditFlagContext = createContext<boolean>(false)
 export const setEditFlagContext = createContext<Dispatch<SetStateAction<boolean>>>(
   () => undefined
@@ -10,8 +18,8 @@ export const PostReceptionsContext = createContext<string[]>([])
 export const setPostReceptionsContext = createContext<Dispatch<SetStateAction<string[]>>>(
   ()=> undefined
 )
-export const DetailSchedulesContext = createContext<ReceptionData[] | null>(null)
-export const setDetailSchedulesContext = createContext<Dispatch<SetStateAction<ReceptionData[] | null>>>(
+export const DetailSchedulesContext = createContext<ScheduleData[] | null>(null)
+export const setDetailSchedulesContext = createContext<Dispatch<SetStateAction<ScheduleData[] | null>>>(
   ()=> undefined
 )
 export const ModeContext = createContext<number>(-1)
@@ -21,14 +29,14 @@ export const setModeContext = createContext<Dispatch<SetStateAction<number>>>(
 
 type WeekCalendarProviderProps = {
   children: ReactNode,
-  schedules: ReceptionData[]
+  schedules: ScheduleData[]
   cal_mode: number
 }
 // modeをpropsで渡して出しわけ
 export const WeekCalendarProvider: FC<WeekCalendarProviderProps> = ( { children, schedules, cal_mode} ) => {
   const [EditFlag, setEditFlag] = useState<boolean>(false)
   const [postReceptions, setPostReceptions] = useState<string[]>([])
-  const [DetailSchedules, setDetailSchedules] = useState<ReceptionData[] | null>(null)
+  const [DetailSchedules, setDetailSchedules] = useState<ScheduleData[] | null>(null)
   const [mode , setMode] = useState<number>(cal_mode)
   
 return(
