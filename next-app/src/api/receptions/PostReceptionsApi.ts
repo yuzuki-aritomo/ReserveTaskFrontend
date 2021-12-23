@@ -1,20 +1,12 @@
 import { baseUrl } from 'src/api/ApiConfig'
+import { ReceptionData } from 'src/models/ReceptionModel'
 
 export interface PostReceptionsReqData {
   register_date: string[],
 }
 
 export interface PostReceptionsResData {
-  data: [
-    {
-      reception_id: number;
-      user_name: string;
-      start: string;
-      end: string;
-      reserved: boolean;
-      canceled: boolean;
-    }
-  ]
+  reception_dates: ReceptionData[],
 }
 
 export const PostReceptionsApi = async (postReceptionsReqData: PostReceptionsReqData)=> {
