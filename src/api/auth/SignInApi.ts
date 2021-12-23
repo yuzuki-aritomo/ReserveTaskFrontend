@@ -9,13 +9,8 @@ export interface SignInResData {
   data: {
     id: string;
     email: string;
-    provider: string;
-    uid: string;
-    allow_password_change: boolean;
     name: string;
     role: number;
-    created_at: string;
-    updated_at: string;
   }
 }
 
