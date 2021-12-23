@@ -87,19 +87,25 @@ const CalDetail: FC = () => {
               <Card.Header as="h5">予約情報詳細</Card.Header>
               <Card.Body>
                 <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
-                  {reception.reserved && //予約完了している場合
+                  {reception.reserved && //予約完了している場合 FP
                     <>
-                      <Card.Text>User: {reception.user_name } </Card.Text>
+                      <Card.Text>User: {reception.customer_name } </Card.Text>
                       <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
                     </>
                   }
-                  { !reception.reserved && mode===0 && //予約受付中
+                  {reception.reserved && //予約完了している場合 Customer
+                    <>
+                      <Card.Text>User: {reception.customer_name } </Card.Text>
+                      <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
+                    </>
+                  }
+                  { !reception.reserved && mode===0 && //予約受付中 FP
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
                       <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
                     </>
                   }
-                  { !reception.reserved && mode===1 && //予約受付中
+                  { !reception.reserved && mode===1 && //予約受付中 Customer
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
                       <Button variant="outline-success" onClick={ reserveReception }>予約する</Button>
