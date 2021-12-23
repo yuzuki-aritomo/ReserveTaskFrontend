@@ -7,17 +7,17 @@ import {
   EditFlagContext, 
   setEditFlagContext, 
   setPostReceptionsContext,
-  DetailReceptionsContext,
+  DetailSchedulesContext,
   ModeContext,
 } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 
 //カレンダー本体
 type WeekCalendarProps = {
-  receptions: ReceptionData[],
+  schedules: ReceptionData[],
   mode: number
 }
-const WeekCalendar: FC<WeekCalendarProps> = ({receptions, mode}) => {
+const WeekCalendar: FC<WeekCalendarProps> = ({schedules, mode}) => {
   //今日を含む直近の一週間の日付をweekDaysに保存
   const today = new Date()
   let weekDays: string[] = Array(7)
@@ -32,7 +32,7 @@ const WeekCalendar: FC<WeekCalendarProps> = ({receptions, mode}) => {
 
 return(
     <div>
-      <WeekCalendarProvider receptions={ receptions } cal_mode={ mode } >
+      <WeekCalendarProvider schedules={ schedules } cal_mode={ mode } >
         <div className={ styles.hole_cal }>
           <div className={styles.cal}>
             <CalWeekTop week={ week } setWeek={ setWeek } />
@@ -53,7 +53,7 @@ export default WeekCalendar
 
 // Calendar詳細 右上に表示される
 const CalDetail: FC = () => {
-  const receptions = useContext(DetailReceptionsContext)
+  const schedules = useContext(DetailSchedulesContext)
   const mode = useContext(ModeContext)
   const formatDate = (start: string, end: string) => {
     const startDate = new Date(start)
@@ -78,34 +78,34 @@ const CalDetail: FC = () => {
   return(
     <>
       <div className="d-flex justify-content-center mt-4" >
-        <p className={styles.week_calendar_title}> Receptions Detail </p>
+        <p className={styles.week_calendar_title}> Schedules Detail </p>
       </div>
       <div className="mt-4 d-flex justify-content-center">
-        {receptions && //receptions情報がある時のみ
-          receptions.map((reception, index) =>
+        {schedules && // schedules情報がある時のみ
+          schedules.map((schedule, index) =>
             <Card className="w-75" key={index}>
               <Card.Header as="h5">予約情報詳細</Card.Header>
               <Card.Body>
-                <Card.Title>{ formatDate(reception.start, reception.end) }</Card.Title>
-                  {reception.reserved && //予約完了している場合 FP
+                <Card.Title>{ formatDate(schedule.start, schedule.end) }</Card.Title>
+                  {schedule.reserved && //予約完了している場合 FP
                     <>
-                      <Card.Text>User: {reception.customer_name } </Card.Text>
+                      <Card.Text>User: {schedule.customer_name } </Card.Text>
                       <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
                     </>
                   }
-                  {reception.reserved && //予約完了している場合 Customer
+                  {schedule.reserved && //予約完了している場合 Customer
                     <>
-                      <Card.Text>User: {reception.customer_name } </Card.Text>
+                      <Card.Text>User: {schedule.customer_name } </Card.Text>
                       <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
                     </>
                   }
-                  { !reception.reserved && mode===0 && //予約受付中 FP
+                  { !schedule.reserved && mode===0 && //予約受付中 FP
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
                       <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
                     </>
                   }
-                  { !reception.reserved && mode===1 && //予約受付中 Customer
+                  { !schedule.reserved && mode===1 && //予約受付中 Customer
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
                       <Button variant="outline-success" onClick={ reserveReception }>予約する</Button>
