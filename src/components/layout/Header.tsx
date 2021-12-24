@@ -1,6 +1,6 @@
 import { FC, useContext } from "react"
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap"
-import { setUserContext, UserContext, UserData } from 'src/provider/UserProvider'
+import { Navbar, Container, Nav } from "react-bootstrap"
+import { UserContext } from 'src/provider/UserProvider'
 import Link from 'next/link'
 
 const Header: FC = () => {
@@ -15,12 +15,11 @@ const Header: FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            { user &&
+            { user ? // login
               <Link href='/home' passHref>
                 <Nav.Link>Home</Nav.Link>
               </Link>
-            }
-            { !user &&
+              : // not login
               <>
                 <Link href='/sign_up' passHref>
                   <Nav.Link>Sign up</Nav.Link>

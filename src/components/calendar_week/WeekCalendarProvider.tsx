@@ -1,5 +1,4 @@
-import { FC, useEffect, createContext, useState, ReactNode, Dispatch, SetStateAction } from "react"
-import { ReceptionData } from 'src/components/models/ReceptionModel'
+import { FC, createContext, useState, ReactNode, Dispatch, SetStateAction } from "react"
 
 export interface ScheduleData {
   id: number;
