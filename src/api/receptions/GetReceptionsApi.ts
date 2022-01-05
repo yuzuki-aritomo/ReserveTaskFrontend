@@ -29,7 +29,7 @@ export const GetReceptionsApi = async (getReceptionsReqData?: GetReceptionsReqDa
     },
   })
   .then((response) => {
-    if(response.ok){
+    if(!response.ok){
       throw new Error('エラーが発生しました。')
     }
 

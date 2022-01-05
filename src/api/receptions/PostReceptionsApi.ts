@@ -23,7 +23,7 @@ export const PostReceptionsApi = async (postReceptionsReqData: PostReceptionsReq
     body: JSON.stringify(postReceptionsReqData)
   })
   .then((response) => {
-    if(response.ok){
+    if(!response.ok){
       throw new Error('エラーが発生しました。')
     }
 

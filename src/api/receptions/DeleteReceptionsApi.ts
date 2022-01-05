@@ -20,7 +20,7 @@ export const GetReceptionsApi = async (deleteReceptionReqData: DeleteReceptionRe
     },
   })
   .then((response) => {
-    if(response.ok){
+    if(!response.ok){
       throw new Error('エラーが発生しました。')
     }
 
