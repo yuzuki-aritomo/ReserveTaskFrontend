@@ -1,5 +1,5 @@
 import { baseUrl } from 'src/api/ApiConfig'
-import { ReceptionData } from 'src/models/ReceptionModel'
+import { ReceptionData } from 'src/api/receptions/ReceptionModel'
 
 export interface PostReceptionsReqData {
   register_date: string[],
