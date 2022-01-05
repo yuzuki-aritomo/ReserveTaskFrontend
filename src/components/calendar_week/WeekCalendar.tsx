@@ -9,8 +9,10 @@ import {
   DetailSchedulesContext,
   ModeContext,
   ScheduleData,
+  PostReceptionsContext
 } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
+import Router from 'next/router';
 
 //カレンダー本体
 type WeekCalendarProps = {
@@ -51,6 +53,8 @@ return(
 }
 export default WeekCalendar
 
+import { PostReceptionsApi, PostReceptionsReqData, PostReceptionsResData } from 'src/api/receptions/PostReceptionsApi'
+
 // Calendar詳細 右上に表示される
 const CalDetail: FC = () => {
   const schedules = useContext(DetailSchedulesContext)
@@ -65,13 +69,13 @@ const CalDetail: FC = () => {
     
     return res
   }
-  const deleteReception = () => {
+  const DeleteReception = () => {
     //delete Reception api
   }
-  const cancelReception = () => {
+  const CancelReception = () => {
     //cancel Reception api
   }
-  const reserveReception = () => {
+  const ReserveReception = async() => {
     // reserve Reception api
   }
   
@@ -90,25 +94,25 @@ const CalDetail: FC = () => {
                   {schedule.reserved && mode == 0 &&//予約完了している場合 FP
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
+                      <Button variant="outline-danger" onClick={ CancelReception } >予約キャンセル</Button>
                     </>
                   }
                   {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
+                      <Button variant="outline-danger" onClick={ CancelReception } >予約キャンセル</Button>
                     </>
                   }
                   { !schedule.reserved && mode===0 && //予約受付中 FP
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
+                      <Button variant="outline-danger" onClick={ DeleteReception }>予約受付削除</Button>
                     </>
                   }
                   { !schedule.reserved && mode===1 && //予約受付中 Customer
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-success" onClick={ reserveReception }>予約する</Button>
+                      <Button variant="outline-success" onClick={ ReserveReception }>予約する</Button>
                     </>
                   }
               </Card.Body>
@@ -155,6 +159,7 @@ const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
 
 //カレンダー下部
 const CalWeekBottom: FC = () => {
+  const postReceptions = useContext(PostReceptionsContext)
   const EditFlag = useContext(EditFlagContext)
   const setEditFlag = useContext(setEditFlagContext)
   const setPostReceptions = useContext(setPostReceptionsContext)
@@ -163,8 +168,17 @@ const CalWeekBottom: FC = () => {
     setEditFlag(false)
     setPostReceptions([])
   }
-  const RegisterReceptions = () =>{
-    //post receptions
+  const RegisterReceptions = async () =>{
+    const postReceptionsReqData: PostReceptionsReqData = {
+      register_date: postReceptions
+    }
+    try{
+      const res: PostReceptionsResData = await PostReceptionsApi(postReceptionsReqData)
+      //todo error分岐処理
+      Router.reload()
+    }catch(e){
+      console.log(e)
+    }
   }
 
   return(
