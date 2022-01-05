@@ -1,7 +1,8 @@
-import { FC, ChangeEvent, useState } from "react"
+import { FC, ChangeEvent, useState, useContext } from "react"
 import { SignInApi, SignInReqData, SignInResData } from 'src/api/auth/SignInApi'
 import { useRouter } from 'next/router'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
+import { setUserContext, UserData } from 'src/provider/UserProvider'
 
 type SignInProps = {
   toPath?: string;
@@ -9,7 +10,7 @@ type SignInProps = {
 
 const SignIn: FC<SignInProps> = ({ toPath }) => {
   const router = useRouter()
-  
+  const setUser = useContext(setUserContext)
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
@@ -21,7 +22,12 @@ const SignIn: FC<SignInProps> = ({ toPath }) => {
     }
     try{
       const signInResData: SignInResData  = await SignInApi(signInReqData)
-      //User情報を保存して/homeにリダイレクト
+      const userDate: UserData = {
+        role: signInResData.data.role,
+        name: signInResData.data.name,
+        email: signInResData.data.email
+      }
+      setUser(userDate)
       const path = toPath ?? "/"
       router.push(path)
       console.log("Success SignInApi:",signInResData)

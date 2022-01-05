@@ -1,7 +1,8 @@
-import { FC, useState, MouseEvent, FormEvent, ChangeEvent } from 'react'
+import { FC, useState, MouseEvent, FormEvent, ChangeEvent, useContext } from 'react'
 import { SignUpApi, SignUpReqData, SignUpResData } from 'src/api/auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from 'react-bootstrap'
 import { useRouter } from 'next/router'
+import { setUserContext, UserData } from 'src/provider/UserProvider'
 
 const SignUp: FC = () => {
   const router = useRouter()
@@ -9,6 +10,7 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [role, setRole] = useState<number>(-1)
+  const setUser = useContext(setUserContext)
   const SignUpSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const ReqData: SignUpReqData = {
@@ -19,9 +21,13 @@ const SignUp: FC = () => {
     }
     try {
       const signUpResData: SignUpResData = await SignUpApi(ReqData)
-      //User情報を保存して/homeにリダイレクト
+      const userDate: UserData = {
+        role: signUpResData.data.role,
+        name: signUpResData.data.name,
+        email: signUpResData.data.email
+      }
+      setUser(userDate)
       router.push('/home')
-      console.log('SignUpApi', signUpResData)
     } catch (e) {
       console.error(e)
     }
