@@ -2,10 +2,10 @@ import { baseUrl } from 'src/api/ApiConfig'
 import { ReceptionData } from 'src/api/receptions/ReceptionModel'
 
 export interface DeleteReceptionReqData {
-  reception_id: string;
+  reception_id: number;
 }
 
-export const GetReceptionsApi = async (deleteReceptionReqData: DeleteReceptionReqData) => {
+export const DeleteReceptionsApi = async (deleteReceptionReqData: DeleteReceptionReqData) => {
   const reception_id = deleteReceptionReqData.reception_id
 
   return fetch(baseUrl+`receptions/${reception_id}`, {

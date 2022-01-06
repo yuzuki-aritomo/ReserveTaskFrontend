@@ -1,5 +1,6 @@
 import { FC, useState, useContext, Dispatch, SetStateAction} from 'react'
 import styles from "styles/calWeek.module.css"
+import Router from 'next/router';
 import { Button, Card } from "react-bootstrap"
 import { 
   WeekCalendarProvider, 
@@ -12,7 +13,8 @@ import {
   PostReceptionsContext
 } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
-import Router from 'next/router';
+import { DeleteReceptionsApi, DeleteReceptionReqData } from 'src/api/receptions/DeleteReceptionsApi'
+import { PostReceptionsApi, PostReceptionsReqData, PostReceptionsResData } from 'src/api/receptions/PostReceptionsApi'
 
 //カレンダー本体
 type WeekCalendarProps = {
@@ -53,7 +55,6 @@ return(
 }
 export default WeekCalendar
 
-import { PostReceptionsApi, PostReceptionsReqData, PostReceptionsResData } from 'src/api/receptions/PostReceptionsApi'
 
 // Calendar詳細 右上に表示される
 const CalDetail: FC = () => {
@@ -69,13 +70,16 @@ const CalDetail: FC = () => {
     
     return res
   }
-  const DeleteReception = () => {
-    //delete Reception api
+  const DeleteReception = async (schedule: ScheduleData) => {
+    const deleteReceptionReqData: DeleteReceptionReqData = {
+      reception_id: schedule.id
+    }
+    await DeleteReceptionsApi(deleteReceptionReqData)
   }
-  const CancelReception = () => {
+  const CancelReservation = async (schedule: ScheduleData) => {
     //cancel Reception api
   }
-  const ReserveReception = async() => {
+  const ReserveReception = async (schedule: ScheduleData) => {
     // reserve Reception api
   }
   
@@ -94,25 +98,25 @@ const CalDetail: FC = () => {
                   {schedule.reserved && mode == 0 &&//予約完了している場合 FP
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ CancelReception } >予約キャンセル</Button>
+                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
                     </>
                   }
                   {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ CancelReception } >予約キャンセル</Button>
+                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
                     </>
                   }
                   { !schedule.reserved && mode===0 && //予約受付中 FP
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-danger" onClick={ DeleteReception }>予約受付削除</Button>
+                      <Button variant="outline-danger" onClick={ () => DeleteReception(schedule) }>予約受付削除</Button>
                     </>
                   }
                   { !schedule.reserved && mode===1 && //予約受付中 Customer
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-success" onClick={ ReserveReception }>予約する</Button>
+                      <Button variant="outline-success" onClick={ () => ReserveReception(schedule) }>予約する</Button>
                     </>
                   }
               </Card.Body>
