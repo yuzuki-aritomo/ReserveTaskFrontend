@@ -96,10 +96,11 @@ const CalDetail: FC = () => {
   }
   const ReserveReception = async (schedule: ScheduleData) => {
     const postReservationData: PostReservationReqData = {
-      reservation_id: schedule.id
+      reception_id: schedule.id
     }
     try{
       await PostReservationApi(postReservationData)
+      Router.reload()
     }catch(e){
       console.log(e)
     }

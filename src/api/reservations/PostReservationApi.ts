@@ -2,13 +2,13 @@ import { baseUrl } from 'src/api/ApiConfig'
 import { ReservationData } from 'src/api/reservations/ReservationModel'
 
 export interface PostReservationReqData {
-  reservation_id: number;
+  reception_id: number;
 }
 
 export const PostReservationApi = async (postReservationReqData: PostReservationReqData) => {
-const reservation_id = postReservationReqData.reservation_id
+const reception_id = postReservationReqData.reception_id
 
-  return fetch(baseUrl+`reservations/${reservation_id}`, {
+  return fetch(baseUrl+`reservations/`, {
     method: 'POST',
     mode: 'cors',
     headers: {
@@ -18,6 +18,9 @@ const reservation_id = postReservationReqData.reservation_id
       'access-token': localStorage.getItem("access-token") ?? "",
       'client': localStorage.getItem("client") ?? "",
     },
+    body: JSON.stringify({
+      reception_id: reception_id
+    })
   })
   .then((response) => {
     if(!response.ok){
