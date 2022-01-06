@@ -74,7 +74,12 @@ const CalDetail: FC = () => {
     const deleteReceptionReqData: DeleteReceptionReqData = {
       reception_id: schedule.id
     }
-    await DeleteReceptionsApi(deleteReceptionReqData)
+    try{
+      await DeleteReceptionsApi(deleteReceptionReqData)
+      Router.reload()
+    }catch(e){
+      console.log(e)
+    }
   }
   const CancelReservation = async (schedule: ScheduleData) => {
     //cancel Reception api
