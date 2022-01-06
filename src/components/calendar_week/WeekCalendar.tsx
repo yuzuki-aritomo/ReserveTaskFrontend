@@ -15,6 +15,8 @@ import {
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
 import { DeleteReceptionsApi, DeleteReceptionReqData } from 'src/api/receptions/DeleteReceptionsApi'
 import { PostReceptionsApi, PostReceptionsReqData, PostReceptionsResData } from 'src/api/receptions/PostReceptionsApi'
+import { PostReservationApi, PostReservationReqData } from 'src/api/reservations/PostReservationApi'
+import { DeleteReservationApi, DeleteReservationReqData } from 'src/api/reservations/DeleteReservationApi'
 
 //カレンダー本体
 type WeekCalendarProps = {
@@ -63,7 +65,7 @@ const CalDetail: FC = () => {
   const formatDate = (start: string, end: string) => {
     const startDate = new Date(start)
     const endDate = new Date(end)
-    const dt = startDate.getMonth() + "/"+ endDate.getDate()
+    const dt = startDate.getMonth() + 1 + "/"+ endDate.getDate()
     const startTime = startDate.getHours()+":"+startDate.getMinutes().toString().padStart(2, '0')
     const endTime = endDate.getHours()+":"+endDate.getMinutes().toString().padStart(2, '0')
     const res = dt + "  " + startTime + "~" + endTime
@@ -82,10 +84,25 @@ const CalDetail: FC = () => {
     }
   }
   const CancelReservation = async (schedule: ScheduleData) => {
-    //cancel Reception api
+    const deleteReservationReqData :DeleteReservationReqData = {
+      reservation_id: schedule.id
+    }
+    try{
+      await DeleteReservationApi(deleteReservationReqData)
+      Router.reload()
+    }catch(e){
+      console.log(e)
+    }
   }
   const ReserveReception = async (schedule: ScheduleData) => {
-    // reserve Reception api
+    const postReservationData: PostReservationReqData = {
+      reservation_id: schedule.id
+    }
+    try{
+      await PostReservationApi(postReservationData)
+    }catch(e){
+      console.log(e)
+    }
   }
   
   return(

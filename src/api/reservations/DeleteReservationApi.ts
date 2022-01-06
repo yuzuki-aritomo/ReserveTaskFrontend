@@ -1,5 +1,4 @@
 import { baseUrl } from 'src/api/ApiConfig'
-import { ReservationData } from 'src/api/reservations/ReservationModel'
 
 export interface DeleteReservationReqData {
   reservation_id: number;
@@ -23,11 +22,6 @@ export const DeleteReservationApi = async (deleteReservationReqData: DeleteReser
     if(!response.ok){
       throw new Error('エラーが発生しました。')
     }
-
-    return response.json()
-  })
-  .then((data) => {
-    return data as ReservationData
   })
   .catch((error) => {
     throw new Error('エラーが発生しました。')
