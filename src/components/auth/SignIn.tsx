@@ -23,7 +23,7 @@ const SignIn: FC<SignInProps> = ({ toPath }) => {
     try{
       const signInResData: SignInResData  = await SignInApi(signInReqData)
       const userDate: UserData = {
-        role: signInResData.data.role,
+        role: signInResData.data.role.toString(),
         name: signInResData.data.name,
         email: signInResData.data.email
       }
