@@ -27,15 +27,11 @@ export const CalTimeFpReception: FC<CalTimeProps> = ( { dt_ISO } ) => {
     )
   }else if (schedule[0].reserved){
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailSchedules(schedule)  }>
-        予約完了
-      </div>
+      <div className={ styles.cal_time_reserved } onClick={ ()=> setDetailSchedules(schedule)  }></div>
     )
   }else{
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailSchedules(schedule) }>
-        予約受付中
-      </div>
+      <div className={ styles.cal_time_reception } onClick={ ()=> setDetailSchedules(schedule) }></div>
     )
   }
 }
@@ -65,15 +61,11 @@ const EditCalTime: FC<EditCalTime> = ( {schedule, dt} ) =>{
     )
   }else if (schedule.reserved){
     return(
-      <div className={ styles.cal_time }>
-        予約完了
-      </div>
+      <div className={ styles.cal_time_reserved }></div>
     )
   }else{
     return(
-      <div className={ styles.cal_time }>
-        予約受付中
-      </div>
+      <div className={ styles.cal_time_reception }></div>
     )
   }
 }
@@ -91,7 +83,7 @@ export const CalTimeUserReception: FC<CalTimeProps> = ( {dt_ISO} ) => {
   }else{
     return(
       <div className={ styles.cal_time } onClick={ ()=> setDetailSchedules(schedule) }>
-        予約空き{ schedule.length }件
+        空き{ schedule.length }件
       </div>
     )
   }
@@ -104,14 +96,11 @@ export const CalTimeUserReservation: FC<CalTimeProps> = ( {dt_ISO} ) => {
   const schedule = schedules.filter(r => r.start===dt_ISO)
   if (schedule.length===0){
     return(
-      <div className={ styles.cal_time }>
-      </div>
+      <div className={ styles.cal_time }></div>
     )
   }else{
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailSchedules(schedule) }>
-        予約完了
-      </div>
+      <div className={ styles.cal_time_reserved } onClick={ ()=> setDetailSchedules(schedule) }></div>
     )
   }
 }
