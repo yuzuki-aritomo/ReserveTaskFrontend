@@ -1,7 +1,7 @@
 import { FC, useState, useContext, Dispatch, SetStateAction} from 'react'
 import styles from "styles/calWeek.module.css"
 import Router from 'next/router';
-import { Button, Card } from "react-bootstrap"
+import { Button, Card, Modal } from "react-bootstrap"
 import { 
   WeekCalendarProvider, 
   EditFlagContext, 
@@ -185,6 +185,8 @@ const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
 
 //カレンダー下部
 const CalWeekBottom: FC = () => {
+  const [show, setShow] = useState(false);
+  const [modalContent, setModalContent] = useState('');
   const postReceptions = useContext(PostReceptionsContext)
   const EditFlag = useContext(EditFlagContext)
   const setEditFlag = useContext(setEditFlagContext)
@@ -200,24 +202,52 @@ const CalWeekBottom: FC = () => {
     }
     try{
       const res: PostReceptionsResData = await PostReceptionsApi(postReceptionsReqData)
-      //todo error分岐処理
+      if(res.error != null){
+        setShow(true)
+        let errorText = ''
+        for(let i=0; i<res.error.length; i++){
+          errorText += res.error[i].date
+          errorText += res.error[i].error_messages.join(',')
+        }
+        setModalContent(errorText)
+        throw res.error
+      }
       Router.reload()
     }catch(e){
       console.log(e)
     }
   }
+  const ModalClose = () => {
+    setShow(false)
+    Router.reload()
+  }
 
   return(
-    <div className="d-flex justify-content-end mt-4">
-      { !EditFlag &&
-        <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
-      }
-      { EditFlag &&
-        <>
-          <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
-          <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
-        </>
-      }
-    </div>
+    <>
+      <div className="d-flex justify-content-end mt-4">
+        { !EditFlag &&
+          <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
+        }
+        { EditFlag &&
+          <>
+            <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
+            <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
+          </>
+        }
+      </div>
+      <Modal show={show} onHide={ ModalClose }>
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          { modalContent }
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={ ModalClose }>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }

@@ -7,6 +7,10 @@ export interface PostReceptionsReqData {
 
 export interface PostReceptionsResData {
   reception_dates: ReceptionData[],
+  error?: {
+    'date': string,
+    'error_messages': string[]
+  }[]
 }
 
 export const PostReceptionsApi = async (postReceptionsReqData: PostReceptionsReqData)=> {
