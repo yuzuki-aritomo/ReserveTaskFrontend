@@ -187,6 +187,8 @@ const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
   )
 }
 
+import BackdropModal from 'src/components/ui/BackdropModal'
+
 type CalWeekBottomProps = {
   mode: number
 }
@@ -248,19 +250,11 @@ const CalWeekBottom: FC<CalWeekBottomProps> = ( {mode} ) => {
           }
         </div>
       </div>
-      <Modal show={show} onHide={ ModalClose }>
-        <Modal.Header closeButton>
-          <Modal.Title>Error</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          { modalContent }
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={ ModalClose }>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <BackdropModal 
+        handleClose={ ModalClose }
+        show={show}
+        content={modalContent }
+      />
     </>
   )
 }
