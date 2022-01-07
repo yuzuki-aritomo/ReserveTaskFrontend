@@ -75,6 +75,12 @@ export const CalTimeUserReception: FC<CalTimeProps> = ( {dt_ISO} ) => {
   const setDetailSchedules = useContext (setDetailSchedulesContext)
   const schedules = useContext(ScheduleContext)
   const schedule = schedules.filter(r => r.start===dt_ISO && !r.reserved)
+  const reservedSchedule = schedules.filter(r => r.start===dt_ISO && r.reserved)
+  if (reservedSchedule.length>0){
+    return(
+      <div className={ styles.cal_time_reserved } onClick={ ()=> setDetailSchedules(reservedSchedule) }></div>
+    )
+  }
   if (schedule.length===0){
     return(
       <div className={ styles.cal_time }>
