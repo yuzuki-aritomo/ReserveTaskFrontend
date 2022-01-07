@@ -43,9 +43,7 @@ return(
           <div className={styles.cal}>
             <CalWeekTop week={ week } setWeek={ setWeek } />
             <CalWeek weekDays={ week } />
-            {mode==0&& //FPの時のみ
-              <CalWeekBottom />
-            }
+            <CalWeekBottom  mode={ mode }/>
           </div>
           <div className={ styles.detail }>
             <CalDetail />
@@ -189,8 +187,11 @@ const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
   )
 }
 
+type CalWeekBottomProps = {
+  mode: number
+}
 //カレンダー下部
-const CalWeekBottom: FC = () => {
+const CalWeekBottom: FC<CalWeekBottomProps> = ( {mode} ) => {
   const [show, setShow] = useState(false);
   const [modalContent, setModalContent] = useState('');
   const postReceptions = useContext(PostReceptionsContext)
@@ -230,16 +231,22 @@ const CalWeekBottom: FC = () => {
 
   return(
     <>
-      <div className="d-flex justify-content-end mt-4">
-        { !EditFlag &&
-          <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
-        }
-        { EditFlag &&
-          <>
-            <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
-            <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
-          </>
-        }
+      <div className="d-flex justify-content-between mt-4">
+        <div className="d-flex justify-content-around">
+          <div className={ styles.color_reception }></div><p className='mr-2'>予約受付中</p>
+          <div className={ styles.color_reserved }></div><p>予約完了</p>
+        </div>
+        <div>
+          { !EditFlag && mode==0 && // only fp
+            <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
+          }
+          { EditFlag && mode==0 && // only fp
+            <>
+              <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
+              <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
+            </>
+          }
+        </div>
       </div>
       <Modal show={show} onHide={ ModalClose }>
         <Modal.Header closeButton>
