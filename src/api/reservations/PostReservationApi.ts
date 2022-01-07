@@ -6,7 +6,7 @@ export interface PostReservationReqData {
 }
 
 export const PostReservationApi = async (postReservationReqData: PostReservationReqData) => {
-const reception_id = postReservationReqData.reception_id
+  const reception_id = postReservationReqData.reception_id
 
   return fetch(baseUrl+`reservations/`, {
     method: 'POST',
