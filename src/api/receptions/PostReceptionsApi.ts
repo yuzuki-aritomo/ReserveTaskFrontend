@@ -7,7 +7,7 @@ export interface PostReceptionsReqData {
 
 export interface PostReceptionsResData {
   reception_dates: ReceptionData[],
-  error?: {
+  error: {
     'date': string,
     'error_messages': string[]
   }[]

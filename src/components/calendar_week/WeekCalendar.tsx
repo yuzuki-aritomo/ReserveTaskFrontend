@@ -203,7 +203,7 @@ const CalWeekBottom: FC = () => {
     }
     try{
       const res: PostReceptionsResData = await PostReceptionsApi(postReceptionsReqData)
-      if(res.error != null){
+      if(res.error.length > 0){
         setShow(true)
         let errorText = ''
         for(let i=0; i<res.error.length; i++){
