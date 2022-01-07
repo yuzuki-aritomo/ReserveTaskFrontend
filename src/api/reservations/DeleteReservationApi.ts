@@ -1,14 +1,13 @@
 import { baseUrl } from 'src/api/ApiConfig'
-import { ReceptionData } from 'src/api/receptions/ReceptionModel'
 
-export interface DeleteReceptionReqData {
-  reception_id: number;
+export interface DeleteReservationReqData {
+  reservation_id: number;
 }
 
-export const DeleteReceptionsApi = async (deleteReceptionReqData: DeleteReceptionReqData) => {
-  const reception_id = deleteReceptionReqData.reception_id
+export const DeleteReservationApi = async (deleteReservationReqData: DeleteReservationReqData) => {
+  const reservation_id = deleteReservationReqData.reservation_id
 
-  return fetch(baseUrl+`receptions/${reception_id}`, {
+  return fetch(baseUrl+`reservations/${reservation_id}`, {
     method: 'DELETE',
     mode: 'cors',
     headers: {
@@ -23,11 +22,6 @@ export const DeleteReceptionsApi = async (deleteReceptionReqData: DeleteReceptio
     if(!response.ok){
       throw new Error('エラーが発生しました。')
     }
-
-    return response.json()
-  })
-  .then((data) => {
-    return data as ReceptionData
   })
   .catch((error) => {
     throw new Error('エラーが発生しました。')

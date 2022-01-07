@@ -1,6 +1,6 @@
 import { FC, createContext, useEffect, useState, Dispatch, SetStateAction, ReactNode } from 'react'
 export interface UserData {
-  role: number;
+  role: string;
   name: string;
   email: string;
 }
@@ -17,7 +17,7 @@ export const UserProvider: FC = ( { children } ) => {
       if( localStorage.getItem("access-token") != null ){
         setUser({
           name: localStorage.getItem("name") ?? "",
-          role: Number(localStorage.getItem("role")) ?? "",
+          role: localStorage.getItem("role") ?? "",
           email: localStorage.getItem("email") ?? ""
         })
       }

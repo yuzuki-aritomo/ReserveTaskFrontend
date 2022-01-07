@@ -1,20 +1,14 @@
 import { baseUrl } from 'src/api/ApiConfig'
-import { ReceptionData } from 'src/api/receptions/ReceptionModel'
+import { ReservationData } from 'src/api/reservations/ReservationModel'
 
-export interface PostReceptionsReqData {
-  register_date: string[],
+export interface PostReservationReqData {
+  reception_id: number;
 }
 
-export interface PostReceptionsResData {
-  reception_dates: ReceptionData[],
-  error?: {
-    'date': string,
-    'error_messages': string[]
-  }[]
-}
+export const PostReservationApi = async (postReservationReqData: PostReservationReqData) => {
+  const reception_id = postReservationReqData.reception_id
 
-export const PostReceptionsApi = async (postReceptionsReqData: PostReceptionsReqData)=> {
-  return fetch(baseUrl+'receptions/', {
+  return fetch(baseUrl+`reservations/`, {
     method: 'POST',
     mode: 'cors',
     headers: {
@@ -24,7 +18,9 @@ export const PostReceptionsApi = async (postReceptionsReqData: PostReceptionsReq
       'access-token': localStorage.getItem("access-token") ?? "",
       'client': localStorage.getItem("client") ?? "",
     },
-    body: JSON.stringify(postReceptionsReqData)
+    body: JSON.stringify({
+      reception_id: reception_id
+    })
   })
   .then((response) => {
     if(!response.ok){
@@ -34,7 +30,7 @@ export const PostReceptionsApi = async (postReceptionsReqData: PostReceptionsReq
     return response.json()
   })
   .then((data) => {
-    return data as PostReceptionsResData
+    return data as ReservationData
   })
   .catch((error) => {
     throw new Error('エラーが発生しました。')

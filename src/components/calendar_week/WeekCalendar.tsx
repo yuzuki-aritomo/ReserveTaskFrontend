@@ -1,6 +1,7 @@
 import { FC, useState, useContext, Dispatch, SetStateAction} from 'react'
 import styles from "styles/calWeek.module.css"
-import { Button, Card } from "react-bootstrap"
+import Router from 'next/router';
+import { Button, Card, Modal } from "react-bootstrap"
 import { 
   WeekCalendarProvider, 
   EditFlagContext, 
@@ -9,8 +10,13 @@ import {
   DetailSchedulesContext,
   ModeContext,
   ScheduleData,
+  PostReceptionsContext
 } from 'src/components/calendar_week/WeekCalendarProvider'
 import { CalWeek } from 'src/components/calendar_week/WeekCalendarChidlren'
+import { DeleteReceptionsApi, DeleteReceptionReqData } from 'src/api/receptions/DeleteReceptionsApi'
+import { PostReceptionsApi, PostReceptionsReqData, PostReceptionsResData } from 'src/api/receptions/PostReceptionsApi'
+import { PostReservationApi, PostReservationReqData } from 'src/api/reservations/PostReservationApi'
+import { DeleteReservationApi, DeleteReservationReqData } from 'src/api/reservations/DeleteReservationApi'
 
 //カレンダー本体
 type WeekCalendarProps = {
@@ -51,6 +57,7 @@ return(
 }
 export default WeekCalendar
 
+
 // Calendar詳細 右上に表示される
 const CalDetail: FC = () => {
   const schedules = useContext(DetailSchedulesContext)
@@ -58,21 +65,45 @@ const CalDetail: FC = () => {
   const formatDate = (start: string, end: string) => {
     const startDate = new Date(start)
     const endDate = new Date(end)
-    const dt = startDate.getMonth() + "/"+ endDate.getDate()
+    const dt = startDate.getMonth() + 1 + "/"+ endDate.getDate()
     const startTime = startDate.getHours()+":"+startDate.getMinutes().toString().padStart(2, '0')
     const endTime = endDate.getHours()+":"+endDate.getMinutes().toString().padStart(2, '0')
     const res = dt + "  " + startTime + "~" + endTime
     
     return res
   }
-  const deleteReception = () => {
-    //delete Reception api
+  const DeleteReception = async (schedule: ScheduleData) => {
+    const deleteReceptionReqData: DeleteReceptionReqData = {
+      reception_id: schedule.id
+    }
+    try{
+      await DeleteReceptionsApi(deleteReceptionReqData)
+      Router.reload()
+    }catch(e){
+      console.log(e)
+    }
   }
-  const cancelReception = () => {
-    //cancel Reception api
+  const CancelReservation = async (schedule: ScheduleData) => {
+    const deleteReservationReqData :DeleteReservationReqData = {
+      reservation_id: schedule.id
+    }
+    try{
+      await DeleteReservationApi(deleteReservationReqData)
+      Router.reload()
+    }catch(e){
+      console.log(e)
+    }
   }
-  const reserveReception = () => {
-    // reserve Reception api
+  const ReserveReception = async (schedule: ScheduleData) => {
+    const postReservationData: PostReservationReqData = {
+      reception_id: schedule.id
+    }
+    try{
+      await PostReservationApi(postReservationData)
+      Router.reload()
+    }catch(e){
+      console.log(e)
+    }
   }
   
   return(
@@ -90,25 +121,25 @@ const CalDetail: FC = () => {
                   {schedule.reserved && mode == 0 &&//予約完了している場合 FP
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
+                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
                     </>
                   }
                   {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
                     <>
                       <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ cancelReception } >予約キャンセル</Button>
+                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
                     </>
                   }
                   { !schedule.reserved && mode===0 && //予約受付中 FP
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-danger" onClick={ deleteReception }>予約受付削除</Button>
+                      <Button variant="outline-danger" onClick={ () => DeleteReception(schedule) }>予約受付削除</Button>
                     </>
                   }
                   { !schedule.reserved && mode===1 && //予約受付中 Customer
                     <>
                       <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-success" onClick={ reserveReception }>予約する</Button>
+                      <Button variant="outline-success" onClick={ () => ReserveReception(schedule) }>予約する</Button>
                     </>
                   }
               </Card.Body>
@@ -155,6 +186,9 @@ const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
 
 //カレンダー下部
 const CalWeekBottom: FC = () => {
+  const [show, setShow] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+  const postReceptions = useContext(PostReceptionsContext)
   const EditFlag = useContext(EditFlagContext)
   const setEditFlag = useContext(setEditFlagContext)
   const setPostReceptions = useContext(setPostReceptionsContext)
@@ -163,21 +197,58 @@ const CalWeekBottom: FC = () => {
     setEditFlag(false)
     setPostReceptions([])
   }
-  const RegisterReceptions = () =>{
-    //post receptions
+  const RegisterReceptions = async () =>{
+    const postReceptionsReqData: PostReceptionsReqData = {
+      register_date: postReceptions
+    }
+    try{
+      const res: PostReceptionsResData = await PostReceptionsApi(postReceptionsReqData)
+      if(res.error != null){
+        setShow(true)
+        let errorText = ''
+        for(let i=0; i<res.error.length; i++){
+          errorText += res.error[i].date
+          errorText += res.error[i].error_messages.join(',')
+        }
+        setModalContent(errorText)
+        throw res.error
+      }
+      Router.reload()
+    }catch(e){
+      console.log(e)
+    }
+  }
+  const ModalClose = () => {
+    setShow(false)
+    Router.reload()
   }
 
   return(
-    <div className="d-flex justify-content-end mt-4">
-      { !EditFlag &&
-        <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
-      }
-      { EditFlag &&
-        <>
-          <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
-          <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
-        </>
-      }
-    </div>
+    <>
+      <div className="d-flex justify-content-end mt-4">
+        { !EditFlag &&
+          <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
+        }
+        { EditFlag &&
+          <>
+            <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
+            <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
+          </>
+        }
+      </div>
+      <Modal show={show} onHide={ ModalClose }>
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          { modalContent }
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={ ModalClose }>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
