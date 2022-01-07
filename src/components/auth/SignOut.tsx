@@ -1,7 +1,7 @@
 import { FC, FormEvent, useContext } from 'react'
 import { SignOutApi } from 'src/api/auth/SignOutApi'
 import { Row, Col, Card, Form, Button } from "react-bootstrap"
-import { setUserContext } from 'src/provider/UserProvider'
+import { setUserContext } from 'src/providers/UserProvider'
 
 export const SignOut: FC = ()=> {
   const setUser = useContext(setUserContext)

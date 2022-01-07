@@ -2,7 +2,7 @@ import { FC, useState, MouseEvent, FormEvent, ChangeEvent, useContext } from 're
 import { SignUpApi, SignUpReqData, SignUpResData } from 'src/api/auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from 'react-bootstrap'
 import { useRouter } from 'next/router'
-import { setUserContext, UserData } from 'src/provider/UserProvider'
+import { setUserContext, UserData } from 'src/providers/UserProvider'
 
 const SignUp: FC = () => {
   const router = useRouter()
