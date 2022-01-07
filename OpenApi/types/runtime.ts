@@ -126,6 +126,7 @@ export const COLLECTION_FORMATS = {
     pipes: "|",
 };
 
+
 export type FetchAPI = WindowOrWorkerGlobalScope['fetch'];
 
 export interface ConfigurationParameters {
