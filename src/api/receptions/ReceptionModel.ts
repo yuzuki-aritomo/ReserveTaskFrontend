@@ -3,5 +3,6 @@ export interface ReceptionData {
   start: string;
   end: string;
   customer_name: string;
+  fp_name: string;
   reserved: boolean;
 }

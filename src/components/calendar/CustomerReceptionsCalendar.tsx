@@ -23,7 +23,7 @@ const CustomerReceptionsCalendar:FC = () => {
             start: formatToISO(fetch_openings[i].start),
             end: formatToISO(fetch_openings[i].end),
             reserved: fetch_openings[i].reserved,
-            name: fetch_openings[i].customer_name,
+            name: fetch_openings[i].fp_name,
           })
         }
         const getReservationsReqData: GetReservationsReqData = {

@@ -112,40 +112,45 @@ const CalDetail: FC = () => {
         <p className={styles.week_calendar_title}> Schedules Detail </p>
       </div>
       <div className="mt-4 d-flex justify-content-center">
-        {schedules && // schedules情報がある時のみ
-          schedules.map((schedule, index) =>
-            <Card className="w-75" key={index}>
-              <Card.Header as="h5">予約情報詳細</Card.Header>
-              <Card.Body>
-                <Card.Title>{ formatDate(schedule.start, schedule.end) }</Card.Title>
-                  {schedule.reserved && mode == 0 &&//予約完了している場合 FP
-                    <>
-                      <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
-                    </>
-                  }
-                  {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
-                    <>
-                      <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
-                    </>
-                  }
-                  { !schedule.reserved && mode===0 && //予約受付中 FP
-                    <>
-                      <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-danger" onClick={ () => DeleteReception(schedule) }>予約受付削除</Button>
-                    </>
-                  }
-                  { !schedule.reserved && mode===1 && //予約受付中 Customer
-                    <>
-                      <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-success" onClick={ () => ReserveReception(schedule) }>予約する</Button>
-                    </>
-                  }
-              </Card.Body>
-            </Card>
-          )
-        }
+        <div className="w-75">
+          {schedules && // schedules情報がある時のみ
+            schedules.map((schedule, index) =>
+              <Card className='mb-2' key={index}>
+                <Card.Header as="h5">予約情報詳細</Card.Header>
+                <Card.Body>
+                  <Card.Title>{ formatDate(schedule.start, schedule.end) }</Card.Title>
+                    {schedule.reserved && mode == 0 &&//予約完了している場合 FP
+                      <>
+                        <Card.Text>User: {schedule.name } </Card.Text>
+                        <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
+                      </>
+                    }
+                    {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
+                      <>
+                        <Card.Text>User: {schedule.name } </Card.Text>
+                        <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
+                      </>
+                    }
+                    { !schedule.reserved && mode===0 && //予約受付中 FP
+                      <>
+                        <Card.Text> 予約受付中 </Card.Text>
+                        <Button variant="outline-danger" onClick={ () => DeleteReception(schedule) }>予約受付削除</Button>
+                      </>
+                    }
+                    { !schedule.reserved && mode===1 && //予約受付中 Customer
+                      <>
+                        <Card.Text>
+                          予約受付中 <br/>
+                          FP：{ schedule.name } 
+                          </Card.Text>
+                        <Button variant="outline-success" onClick={ () => ReserveReception(schedule) }>予約する</Button>
+                      </>
+                    }
+                </Card.Body>
+              </Card>
+            )
+          }
+        </div>
       </div>
     </>
   )
