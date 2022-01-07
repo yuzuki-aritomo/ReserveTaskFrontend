@@ -22,7 +22,7 @@ const SignUp: FC = () => {
     try {
       const signUpResData: SignUpResData = await SignUpApi(ReqData)
       const userDate: UserData = {
-        role: signUpResData.data.role,
+        role: signUpResData.data.role.toString(),
         name: signUpResData.data.name,
         email: signUpResData.data.email
       }
