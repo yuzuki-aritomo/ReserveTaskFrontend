@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useContext } from 'react'
 import FpReceptionsCalendar from 'src/components/calendar/FpReceptionsCalendar'
 import CustomerReceptionsCalendar from 'src/components/calendar/CustomerReceptionsCalendar'
-import { UserContext } from 'src/provider/UserProvider'
+import { UserContext } from 'src/providers/UserProvider'
 
 const ReceptionsPage: NextPage = () => {
   const user = useContext(UserContext)

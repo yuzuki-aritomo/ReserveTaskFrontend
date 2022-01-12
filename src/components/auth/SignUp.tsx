@@ -2,7 +2,7 @@ import { FC, useState, MouseEvent, FormEvent, ChangeEvent, useContext } from 're
 import { SignUpApi, SignUpReqData, SignUpResData } from 'src/api/auth/SignUpApi'
 import { Row, Col, Card, Form, Button, FloatingLabel } from 'react-bootstrap'
 import { useRouter } from 'next/router'
-import { setUserContext, UserData } from 'src/provider/UserProvider'
+import { setUserContext, UserData } from 'src/providers/UserProvider'
 
 const SignUp: FC = () => {
   const router = useRouter()
@@ -22,7 +22,7 @@ const SignUp: FC = () => {
     try {
       const signUpResData: SignUpResData = await SignUpApi(ReqData)
       const userDate: UserData = {
-        role: signUpResData.data.role,
+        role: signUpResData.data.role.toString(),
         name: signUpResData.data.name,
         email: signUpResData.data.email
       }

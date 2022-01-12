@@ -2,7 +2,7 @@ import { FC, ChangeEvent, useState, useContext } from "react"
 import { SignInApi, SignInReqData, SignInResData } from 'src/api/auth/SignInApi'
 import { useRouter } from 'next/router'
 import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap"
-import { setUserContext, UserData } from 'src/provider/UserProvider'
+import { setUserContext, UserData } from 'src/providers/UserProvider'
 
 type SignInProps = {
   toPath?: string;

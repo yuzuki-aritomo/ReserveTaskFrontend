@@ -49,12 +49,6 @@ export interface Reception {
      * @memberof Reception
      */
     reserved?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Reception
-     */
-    canceled?: boolean;
 }
 
 export function ReceptionFromJSON(json: any): Reception {
@@ -72,7 +66,6 @@ export function ReceptionFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'start': !exists(json, 'start') ? undefined : (new Date(json['start'])),
         'end': !exists(json, 'end') ? undefined : (new Date(json['end'])),
         'reserved': !exists(json, 'reserved') ? undefined : json['reserved'],
-        'canceled': !exists(json, 'canceled') ? undefined : json['canceled'],
     };
 }
 
@@ -90,7 +83,6 @@ export function ReceptionToJSON(value?: Reception | null): any {
         'start': value.start === undefined ? undefined : (value.start.toISOString()),
         'end': value.end === undefined ? undefined : (value.end.toISOString()),
         'reserved': value.reserved,
-        'canceled': value.canceled,
     };
 }
 

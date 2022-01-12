@@ -45,6 +45,32 @@ export interface ReceptionsReceptionIdDeleteRequest {
 export class ReceptionApi extends runtime.BaseAPI {
 
     /**
+     * 予約キャンセル情報
+     */
+    async receptionsCancelsGetRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Receptions>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/receptions/cancels`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ReceptionsFromJSON(jsonValue));
+    }
+
+    /**
+     * 予約キャンセル情報
+     */
+    async receptionsCancelsGet(initOverrides?: RequestInit): Promise<Receptions> {
+        const response = await this.receptionsCancelsGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * fp予約登録一覧取得
      */
     async receptionsGetRaw(requestParameters: ReceptionsGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Receptions>> {

@@ -1,6 +1,6 @@
 import { FC, useContext } from "react"
 import { Navbar, Container, Nav } from "react-bootstrap"
-import { UserContext } from 'src/provider/UserProvider'
+import { UserContext } from 'src/providers/UserProvider'
 import Link from 'next/link'
 
 const Header: FC = () => {

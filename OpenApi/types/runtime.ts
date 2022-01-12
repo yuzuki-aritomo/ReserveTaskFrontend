@@ -126,7 +126,8 @@ export const COLLECTION_FORMATS = {
     pipes: "|",
 };
 
-export type FetchAPI = GlobalFetch['fetch'];
+
+export type FetchAPI = WindowOrWorkerGlobalScope['fetch'];
 
 export interface ConfigurationParameters {
     basePath?: string; // override base path
