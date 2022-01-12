@@ -8,8 +8,8 @@ export const SignOut: FC = ()=> {
   const SignOutSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try{
-      await SignOutApi()
       setUser(null)
+      await SignOutApi()
     }catch(e){
       console.error(e)
     }

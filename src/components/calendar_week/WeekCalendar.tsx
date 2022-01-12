@@ -43,9 +43,7 @@ return(
           <div className={styles.cal}>
             <CalWeekTop week={ week } setWeek={ setWeek } />
             <CalWeek weekDays={ week } />
-            {mode==0&& //FPの時のみ
-              <CalWeekBottom />
-            }
+            <CalWeekBottom  mode={ mode }/>
           </div>
           <div className={ styles.detail }>
             <CalDetail />
@@ -112,40 +110,45 @@ const CalDetail: FC = () => {
         <p className={styles.week_calendar_title}> Schedules Detail </p>
       </div>
       <div className="mt-4 d-flex justify-content-center">
-        {schedules && // schedules情報がある時のみ
-          schedules.map((schedule, index) =>
-            <Card className="w-75" key={index}>
-              <Card.Header as="h5">予約情報詳細</Card.Header>
-              <Card.Body>
-                <Card.Title>{ formatDate(schedule.start, schedule.end) }</Card.Title>
-                  {schedule.reserved && mode == 0 &&//予約完了している場合 FP
-                    <>
-                      <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
-                    </>
-                  }
-                  {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
-                    <>
-                      <Card.Text>User: {schedule.name } </Card.Text>
-                      <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
-                    </>
-                  }
-                  { !schedule.reserved && mode===0 && //予約受付中 FP
-                    <>
-                      <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-danger" onClick={ () => DeleteReception(schedule) }>予約受付削除</Button>
-                    </>
-                  }
-                  { !schedule.reserved && mode===1 && //予約受付中 Customer
-                    <>
-                      <Card.Text> 予約受付中 </Card.Text>
-                      <Button variant="outline-success" onClick={ () => ReserveReception(schedule) }>予約する</Button>
-                    </>
-                  }
-              </Card.Body>
-            </Card>
-          )
-        }
+        <div className="w-75">
+          {schedules && // schedules情報がある時のみ
+            schedules.map((schedule, index) =>
+              <Card className='mb-2' key={index}>
+                <Card.Header as="h5">予約情報詳細</Card.Header>
+                <Card.Body>
+                  <Card.Title>{ formatDate(schedule.start, schedule.end) }</Card.Title>
+                    {schedule.reserved && mode == 0 &&//予約完了している場合 FP
+                      <>
+                        <Card.Text>User: {schedule.name } </Card.Text>
+                        <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
+                      </>
+                    }
+                    {schedule.reserved && mode == 1 &&//予約完了している場合 Customer
+                      <>
+                        <Card.Text>User: {schedule.name } </Card.Text>
+                        <Button variant="outline-danger" onClick={ () => CancelReservation(schedule) } >予約キャンセル</Button>
+                      </>
+                    }
+                    { !schedule.reserved && mode===0 && //予約受付中 FP
+                      <>
+                        <Card.Text> 予約受付中 </Card.Text>
+                        <Button variant="outline-danger" onClick={ () => DeleteReception(schedule) }>予約受付削除</Button>
+                      </>
+                    }
+                    { !schedule.reserved && mode===1 && //予約受付中 Customer
+                      <>
+                        <Card.Text>
+                          予約受付中 <br/>
+                          FP：{ schedule.name } 
+                          </Card.Text>
+                        <Button variant="outline-success" onClick={ () => ReserveReception(schedule) }>予約する</Button>
+                      </>
+                    }
+                </Card.Body>
+              </Card>
+            )
+          }
+        </div>
       </div>
     </>
   )
@@ -184,8 +187,11 @@ const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
   )
 }
 
+type CalWeekBottomProps = {
+  mode: number
+}
 //カレンダー下部
-const CalWeekBottom: FC = () => {
+const CalWeekBottom: FC<CalWeekBottomProps> = ( {mode} ) => {
   const [show, setShow] = useState(false);
   const [modalContent, setModalContent] = useState('');
   const postReceptions = useContext(PostReceptionsContext)
@@ -203,7 +209,7 @@ const CalWeekBottom: FC = () => {
     }
     try{
       const res: PostReceptionsResData = await PostReceptionsApi(postReceptionsReqData)
-      if(res.error != null){
+      if(res.error.length > 0){
         setShow(true)
         let errorText = ''
         for(let i=0; i<res.error.length; i++){
@@ -225,16 +231,22 @@ const CalWeekBottom: FC = () => {
 
   return(
     <>
-      <div className="d-flex justify-content-end mt-4">
-        { !EditFlag &&
-          <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
-        }
-        { EditFlag &&
-          <>
-            <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
-            <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
-          </>
-        }
+      <div className="d-flex justify-content-between mt-4">
+        <div className="d-flex justify-content-around">
+          <div className={ styles.color_reception }></div><p className='mr-2'>予約受付中</p>
+          <div className={ styles.color_reserved }></div><p>予約完了</p>
+        </div>
+        <div>
+          { !EditFlag && mode==0 && // only fp
+            <Button variant="outline-success" onClick={ toEditMode } >Register Receptions</Button>
+          }
+          { EditFlag && mode==0 && // only fp
+            <>
+              <Button variant="outline-warning" className="mr-4" onClick={ cancelEditMode } >Cancel</Button>
+              <Button variant="outline-success" onClick={ RegisterReceptions } >Register</Button>
+            </>
+          }
+        </div>
       </div>
       <Modal show={show} onHide={ ModalClose }>
         <Modal.Header closeButton>

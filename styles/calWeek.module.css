@@ -49,3 +49,15 @@
   margin-left: -1px;
   padding: 0;
 }
+.color_reception{
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  background-color: #CDFFFF;
+}
+.color_reserved{
+  margin: 0 10px;
+  width: 24px;
+  height: 24px;
+  background-color: #FDC0FC;
+}

@@ -88,8 +88,8 @@ export const CalTimeUserReception: FC<CalTimeProps> = ( {dt_ISO} ) => {
     )
   }else{
     return(
-      <div className={ styles.cal_time } onClick={ ()=> setDetailSchedules(schedule) }>
-        空き{ schedule.length }件
+      <div className={ styles.cal_time_reception } onClick={ ()=> setDetailSchedules(schedule) }>
+        { schedule.length }件
       </div>
     )
   }
