@@ -1,7 +1,7 @@
 import { FC, useState, useContext, Dispatch, SetStateAction} from 'react'
 import styles from "styles/calWeek.module.css"
 import Router from 'next/router';
-import { Button, Card, Modal } from "react-bootstrap"
+import { Button, Card } from "react-bootstrap"
 import { 
   WeekCalendarProvider, 
   EditFlagContext, 
@@ -17,6 +17,7 @@ import { DeleteReceptionsApi, DeleteReceptionReqData } from 'src/api/receptions/
 import { PostReceptionsApi, PostReceptionsReqData, PostReceptionsResData } from 'src/api/receptions/PostReceptionsApi'
 import { PostReservationApi, PostReservationReqData } from 'src/api/reservations/PostReservationApi'
 import { DeleteReservationApi, DeleteReservationReqData } from 'src/api/reservations/DeleteReservationApi'
+import BackdropModal from 'src/components/ui/BackdropModal'
 
 //カレンダー本体
 type WeekCalendarProps = {
@@ -58,6 +59,8 @@ export default WeekCalendar
 
 // Calendar詳細 右上に表示される
 const CalDetail: FC = () => {
+  const [show, setShow] = useState(false)
+  const [modalContent, setModalContent] = useState('')
   const schedules = useContext(DetailSchedulesContext)
   const mode = useContext(ModeContext)
   const formatDate = (start: string, end: string) => {
@@ -78,7 +81,10 @@ const CalDetail: FC = () => {
       await DeleteReceptionsApi(deleteReceptionReqData)
       Router.reload()
     }catch(e){
-      console.log(e)
+      setShow(true)
+      if( e instanceof Error){
+        setModalContent(e.message)
+      }
     }
   }
   const CancelReservation = async (schedule: ScheduleData) => {
@@ -89,7 +95,10 @@ const CalDetail: FC = () => {
       await DeleteReservationApi(deleteReservationReqData)
       Router.reload()
     }catch(e){
-      console.log(e)
+      setShow(true)
+      if( e instanceof Error){
+        setModalContent(e.message)
+      }
     }
   }
   const ReserveReception = async (schedule: ScheduleData) => {
@@ -100,10 +109,19 @@ const CalDetail: FC = () => {
       await PostReservationApi(postReservationData)
       Router.reload()
     }catch(e){
-      console.log(e)
+      setShow(true)
+      if( e instanceof Error){
+        setModalContent(e.message)
+      }else{
+        throw(e)
+      }
     }
   }
-  
+  const handleModalClose = () => {
+    setShow(false)
+    Router.reload()
+  }
+
   return(
     <>
       <div className="d-flex justify-content-center mt-4" >
@@ -150,6 +168,11 @@ const CalDetail: FC = () => {
           }
         </div>
       </div>
+      <BackdropModal 
+        handleClose={ handleModalClose }
+        show={show}
+        content={modalContent }
+      />
     </>
   )
 }
@@ -186,8 +209,6 @@ const CalWeekTop:FC<CalWeekTopProps> = ( {week, setWeek} ) => {
     </div>
   )
 }
-
-import BackdropModal from 'src/components/ui/BackdropModal'
 
 type CalWeekBottomProps = {
   mode: number

@@ -1,4 +1,4 @@
-import { baseUrl } from 'src/api/ApiConfig'
+import { baseUrl, CustomApiErrorData } from 'src/api/ApiConfig'
 
 export interface DeleteReservationReqData {
   reservation_id: number;
@@ -20,10 +20,12 @@ export const DeleteReservationApi = async (deleteReservationReqData: DeleteReser
   })
   .then((response) => {
     if(!response.ok){
-      throw new Error('エラーが発生しました。')
+      return response.json().then((e: CustomApiErrorData)=>{
+        throw e.message
+      })
     }
   })
   .catch((error) => {
-    throw new Error('エラーが発生しました。')
+    throw new Error(error)
   })
 }
