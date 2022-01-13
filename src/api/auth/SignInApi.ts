@@ -29,7 +29,11 @@ export const SignInApi= async (signInReqData: SignInReqData)=> {
   })
   .then(response => {
     if(!response.ok){
-      throw new Error("エラー発生");
+      if (response.status==401) {
+        throw 'passwordまたはemailが間違っています'
+      }else{
+        throw 'エラーが発生しました。'
+      }
     }
     localStorage.setItem("uid", response.headers.get("uid") ?? "")
     localStorage.setItem("access-token", response.headers.get("access-token") ?? "")
@@ -46,6 +50,6 @@ export const SignInApi= async (signInReqData: SignInReqData)=> {
     return res
   })
   .catch(error=> {
-    throw new Error("エラー発生");
+    throw new Error(error);
   });
 }
