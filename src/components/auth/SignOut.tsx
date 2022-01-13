@@ -2,14 +2,17 @@ import { FC, FormEvent, useContext } from 'react'
 import { SignOutApi } from 'src/api/auth/SignOutApi'
 import { Row, Col, Card, Form, Button } from "react-bootstrap"
 import { setUserContext } from 'src/providers/UserProvider'
+import { useRouter } from 'next/router'
 
 export const SignOut: FC = ()=> {
   const setUser = useContext(setUserContext)
+  const router = useRouter()
   const SignOutSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try{
       setUser(null)
       await SignOutApi()
+      router.push('/')
     }catch(e){
       console.error(e)
     }
