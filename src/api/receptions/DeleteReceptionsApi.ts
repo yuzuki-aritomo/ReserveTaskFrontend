@@ -1,4 +1,4 @@
-import { baseUrl } from 'src/api/ApiConfig'
+import { baseUrl, CustomApiErrorData } from 'src/api/ApiConfig'
 import { ReceptionData } from 'src/api/receptions/ReceptionModel'
 
 export interface DeleteReceptionReqData {
@@ -21,7 +21,9 @@ export const DeleteReceptionsApi = async (deleteReceptionReqData: DeleteReceptio
   })
   .then((response) => {
     if(!response.ok){
-      throw new Error('エラーが発生しました。')
+      return response.json().then((e: CustomApiErrorData)=>{
+        throw e.message
+      })
     }
 
     return response.json()
@@ -30,6 +32,6 @@ export const DeleteReceptionsApi = async (deleteReceptionReqData: DeleteReceptio
     return data as ReceptionData
   })
   .catch((error) => {
-    throw new Error('エラーが発生しました。')
+    throw new Error(error)
   })
 }
